@@ -133,6 +133,7 @@ button{font:inherit}
   display:flex;
 }
 .panel.is-active,.panel.is-leaving{opacity:1}
+.panel.is-active{--sh:0}          /* betik çalışmasa da ön yüz aydınlık kalsın */
 .panel.is-active{pointer-events:auto}
 .panel.no-anim,.panel.no-anim::after{transition:none}
 /* yüz gölgesi: dönerken ışıktan kaçan yüz kararır — kutuyu katı gösteren şey bu */
@@ -289,11 +290,18 @@ button{font:inherit}
     position:static;opacity:1;visibility:visible;pointer-events:auto;display:block;
     order:calc(var(--i) * 2 - 1);
   }
-  .slide-media{position:relative;inset:auto;height:56vh;min-height:300px}
-  .counter{top:auto;bottom:16px;left:20px}
+  /* fotoğraf mobilde kırpılmasın: kare olduğu gibi dursun */
+  .slide-media{position:relative;inset:auto;height:auto;min-height:0;aspect-ratio:1/1}
+  .slide-media::after{           /* sağ kenarı karartma masaüstü içindi, mobilde gereksiz */
+    background:linear-gradient(180deg,rgba(7,7,8,.42) 0%,rgba(7,7,8,0) 26%,
+                                      rgba(7,7,8,0) 72%,rgba(7,7,8,.5) 100%);
+  }
+  /* sayaç akışa girer — konumlu kalırsa beşi birden sayfanın dibine yığılıyor */
+  .counter{position:static;top:auto;bottom:auto;left:auto;padding:20px 20px 0}
+  .counter b{font-size:26px}
   .slide-vtitle{
     position:static;writing-mode:horizontal-tb;transform:none;max-height:none;overflow:visible;
-    padding:26px 20px 0;font-size:24px;
+    padding:10px 20px 0;font-size:25px;
   }
   .slide-vtitle span,.slide.is-active .slide-vtitle span{transform:none;opacity:1;transition:none}
 
@@ -302,6 +310,7 @@ button{font:inherit}
     transform:none;opacity:1;pointer-events:auto;backface-visibility:visible;
     padding:16px 14px 38px;
   }
+  .panel::after{display:none}    /* küp yüzü gölgesi: mobilde küp yok, metni karartıyordu */
   .frame{border-width:9px}
   .frame-inner{padding:26px 22px}
   .panel-scroll{height:auto;overflow:visible;display:block}
