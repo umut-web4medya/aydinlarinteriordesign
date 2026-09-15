@@ -112,6 +112,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.025em;ma
   transition:background-color .35s var(--ease),border-color .35s var(--ease);
 }
 .site-head.is-stuck{background:rgba(8,8,10,.82);border-bottom-color:rgba(255,255,255,.12)}
+.head-end{display:flex;align-items:center;gap:clamp(10px,1.2vw,18px);flex:0 0 auto}
 
 .brand{display:flex;align-items:center;gap:11px;min-width:0;flex:0 0 auto}
 .brand-logo{width:38px;height:auto;flex:0 0 auto;display:block}
@@ -130,6 +131,32 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.025em;ma
 }
 .nav a:hover{color:var(--ink);background:var(--glass-2)}
 .nav .is-current a{color:var(--ink);background:var(--glass-2);box-shadow:inset 0 0 0 1px var(--edge)}
+
+/* Masaüstü: menü sayfanın tam ortasında, geniş bir cam şerit.
+   Üç sütun (marka · menü · dil+telefon); yan sütunlar eşit olduğu için
+   menü sol/sağ içeriğin genişliğinden bağımsız olarak ortada kalır. */
+@media (min-width:1041px){
+  :root{--head-h:80px}
+  .site-head{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(14px,1.6vw,28px)}
+  .head-end{justify-self:end}
+  .nav{
+    margin-left:0;justify-self:center;
+    width:clamp(470px,calc(100vw - 590px),880px);
+    padding:5px;gap:4px;
+    background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.035));
+    border-color:rgba(255,255,255,.15);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 16px 40px -22px rgba(0,0,0,.9);
+  }
+  .nav li{flex:1 1 0;min-width:0}
+  .nav a{
+    position:relative;padding:12px clamp(8px,1vw,18px);text-align:center;white-space:nowrap;
+    font-size:clamp(14px,1.05vw,16px);letter-spacing:.005em;
+  }
+  .nav .is-current a::after{               /* etkin sayfanın altında bakır çizgi */
+    content:"";position:absolute;left:50%;bottom:6px;width:16px;height:2px;margin-left:-8px;
+    border-radius:2px;background:var(--copper);
+  }
+}
 
 .lang{
   display:flex;align-items:center;gap:5px;list-style:none;margin:0;
@@ -167,6 +194,10 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.025em;ma
 .hero{
   position:relative;height:100svh;min-height:600px;overflow:hidden;
   perspective:1150px;perspective-origin:74% 50%;
+  /* alt şerit: oklar + Instagram görselin ÜSTÜNE değil ALTINA oturur.
+     50px = çubuğun yüksekliği (38 düğme + 2×5 iç boşluk + 2 kenar) */
+  --dock-gap:clamp(12px,1.4vh,18px);
+  --dock:calc(50px + var(--dock-gap) * 2);
 }
 
 /* --- görsel yarısı --- */
@@ -178,7 +209,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.025em;ma
 .slide.is-active{opacity:1;visibility:visible;pointer-events:auto}
 
 .slide-media{
-  position:absolute;z-index:1;inset:clamp(14px,1.6vw,26px) 44% clamp(14px,1.6vw,26px) clamp(14px,1.6vw,26px);
+  position:absolute;z-index:1;inset:clamp(14px,1.6vw,26px) 44% var(--dock) clamp(14px,1.6vw,26px);
   overflow:hidden;border-radius:var(--r);background:var(--void-2);
   box-shadow:0 40px 90px -40px rgba(0,0,0,.9);
 }
@@ -219,8 +250,8 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.025em;ma
 /* dikey başlık */
 p.slide-vtitle{margin:0}
 .slide-vtitle{
-  position:absolute;z-index:6;left:clamp(26px,2.8vw,50px);bottom:clamp(64px,8vh,110px);
-  margin:0;max-height:58vh;overflow:hidden;
+  position:absolute;z-index:6;left:clamp(26px,2.8vw,50px);bottom:calc(var(--dock) + clamp(26px,3.4vh,44px));
+  margin:0;max-height:54vh;overflow:hidden;
   font-family:var(--display);   /* <h2>'den <p>'ye dönünce başlık fontunu kaybetmişti */
   writing-mode:vertical-rl;transform:rotate(180deg);
   font-size:clamp(24px,2.5vw,50px);font-weight:600;line-height:1.05;letter-spacing:-.03em;
@@ -236,7 +267,7 @@ p.slide-vtitle{margin:0}
    3B dönüş sırasında backdrop-filter güvenilmez, o yüzden cam görünümü
    yarı saydam dolgu + kenar ışığı ile kuruldu; rengi arkadaki bloom verir. */
 .panel{
-  position:absolute;z-index:10;inset:clamp(52px,7vh,96px) clamp(14px,1.6vw,26px) clamp(52px,7vh,96px) 46%;
+  position:absolute;z-index:10;inset:clamp(52px,7vh,96px) clamp(14px,1.6vw,26px) max(clamp(52px,7vh,96px),var(--dock)) 46%;
   --a:90deg;--sh:.9;
   transform:translateZ(calc(var(--cw) / -2)) rotateY(var(--a)) translateZ(calc(var(--cw) / 2));
   transition:transform .85s var(--ease-2);
@@ -326,7 +357,7 @@ p.slide-vtitle{margin:0}
 .pull-quote::before{content:"“";color:var(--copper-ink);font-size:1.6em;line-height:0;vertical-align:-.28em;margin-right:.12em}
 
 /* marka çipleri */
-.ref-groups{display:grid;gap:clamp(14px,1.5vw,22px);margin:0;max-width:72ch}
+.ref-groups{display:grid;gap:clamp(12px,1.1vw,18px);margin:0;max-width:72ch}
 .ref-group h3{
   margin:0 0 9px;font-family:var(--text);
   font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--copper-ink);
@@ -350,7 +381,7 @@ p.slide-vtitle{margin:0}
 
 /* --- oklar --- */
 .hero-nav{
-  position:absolute;z-index:12;left:clamp(26px,2.8vw,50px);bottom:clamp(16px,2.2vh,30px);
+  position:absolute;z-index:12;left:clamp(14px,1.6vw,26px);bottom:var(--dock-gap);
   display:flex;gap:8px;padding:5px;border-radius:999px;
   background:rgba(8,8,10,.5);border:1px solid var(--edge);
   -webkit-backdrop-filter:blur(18px) saturate(170%);
@@ -368,8 +399,8 @@ p.slide-vtitle{margin:0}
 .hero-nav .ayrac{width:1px;align-self:stretch;margin:4px 3px;background:var(--edge)}
 
 .hero-foot{
-  position:absolute;z-index:12;right:clamp(26px,2.8vw,50px);bottom:clamp(18px,2.4vh,32px);
-  margin:0;font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);opacity:.75;
+  position:absolute;z-index:12;right:clamp(26px,2.8vw,50px);bottom:var(--dock-gap);
+  margin:0;line-height:50px;                /* oklar çubuğuyla aynı hizada */font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);opacity:.75;
 }
 
 /* ===========================================================================
@@ -521,7 +552,7 @@ p.slide-vtitle{margin:0}
 /* Kısa masaüstü ekranları (dizüstü): panel taşmasın diye nefes payı kısılır.
    1415x647 gibi bir görüntü alanında kutu yalnız ~543px kalıyor. */
 @media (min-width:981px) and (max-height:830px){
-  .panel{inset:clamp(38px,5vh,66px) clamp(14px,1.6vw,26px) clamp(38px,5vh,66px) 46%}
+  .panel{inset:clamp(38px,5vh,66px) clamp(14px,1.6vw,26px) var(--dock) 46%}
   .frame-inner{padding:clamp(20px,2.4vw,42px) clamp(24px,3vw,54px)}
   .panel-kicker{margin-bottom:clamp(10px,1.2vw,16px)}
   .panel-title{font-size:clamp(22px,2.3vw,40px);margin-bottom:clamp(12px,1.4vw,20px)}
@@ -532,12 +563,12 @@ p.slide-vtitle{margin:0}
   .check-list li::before{left:14px}
   .check-list .is-highlight{padding:9px 14px 9px 36px}
   .pull-quote{margin-bottom:clamp(14px,1.6vw,22px);padding:13px 16px}
-  .ref-groups{gap:11px}
+  .ref-groups{gap:8px}
   .ref-group h3{margin-bottom:6px}
   .chips li{padding:5px 11px;font-size:12px}
   .panel-actions{margin-top:clamp(14px,1.6vw,24px)}
   .counter{top:calc(var(--head-h) + 3vh)}
-  .slide-vtitle{bottom:clamp(58px,7vh,92px);max-height:50vh}
+  .slide-vtitle{bottom:calc(var(--dock) + 20px);max-height:48vh}
 }
 
 /* ===========================================================================
@@ -556,7 +587,7 @@ p.slide-vtitle{margin:0}
   .nav a{padding:14px 16px;font-size:16px;border-radius:var(--r-sm)}
   .head-cta{display:none}
   .nav-toggle{display:block}
-  .lang{margin-left:auto}
+  .head-end{margin-left:auto}
   .site-head{overflow:visible}
 }
 @media (max-width:980px){
@@ -598,7 +629,7 @@ p.slide-vtitle{margin:0}
   }
   .hero-nav button{display:none}          /* mobilde deste yok, yalnız sosyal kalır */
   .hero-nav .ayrac{display:none}
-  .hero-foot{position:static;order:99;padding:18px 20px 30px;text-align:left}
+  .hero-foot{position:static;order:99;padding:18px 20px 30px;text-align:left;line-height:1.7}
 }
 @media (max-width:560px){
   .page-hero h1{font-size:clamp(30px,9vw,44px)}

@@ -170,9 +170,11 @@ def header(lang, key):
   <ul class="nav" id="nav">
 {chr(10).join(ogeler)}
   </ul>
+  <div class="head-end">
 {dil_secici(lang, key)}
   <a class="btn head-cta" href="tel:{TEL_HREF}">{TEL_YAZI}</a>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="{t('menu_open', lang)}"><i></i></button>
+  </div>
 </header>
 """
 
