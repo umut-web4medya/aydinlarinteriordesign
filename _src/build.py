@@ -184,14 +184,23 @@ def ref_bloklari(lang, sinif="ref-groups"):
 # ------------------------------------------------------------------ anasayfa
 def deste(lang):
     key = "home"
-    g = t("img_label", lang)
+    up = "../" * derinlik(dosya(lang, key))
     dikey = [t(f"v{i}", lang) for i in range(1, 6)]
     slaytlar = []
     for i in range(1, 6):
         aktif = " is-active" if i == 1 else ""
         gizli = "" if i == 1 else ' aria-hidden="true"'
+        buyuk, kucuk = f"{up}images/slide-{i}.webp", f"{up}images/slide-{i}-sm.webp"
+        setler = f'{kucuk} 760w, {buyuk} 1220w'
+        olculer = '(max-width:980px) 100vw, 55vw'
+        if i == 1:      # ilk kare hemen yüklenir
+            gorsel = (f'<img class="slide-bg" src="{buyuk}" srcset="{setler}" sizes="{olculer}" '
+                      f'alt="{t("alt1", lang)}" width="1220" height="1229" fetchpriority="high" decoding="async">')
+        else:           # kalanlar boşta kalınca — deck.js yükler
+            gorsel = (f'<img class="slide-bg" data-src="{buyuk}" data-srcset="{setler}" sizes="{olculer}" '
+                      f'alt="{t(f"alt{i}", lang)}" width="1220" height="1229" loading="lazy" decoding="async">')
         slaytlar.append(f"""  <article class="slide{aktif}" style="--i:{i}" aria-label="{i} / 5"{gizli}>
-    <div class="slide-media"><div class="slide-bg is-placeholder" data-label="{g} {i} — {dikey[i-1]}"></div></div>
+    <div class="slide-media">{gorsel}</div>
     <div class="counter"><b>{i}</b><i>5</i></div>
     <h2 class="slide-vtitle"><span>{dikey[i-1]}</span></h2>
   </article>""")

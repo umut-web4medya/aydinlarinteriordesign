@@ -3,7 +3,17 @@
   if(!hero) return;                                   /* iç sayfalarda deste yok */
   var slides = Array.prototype.slice.call(hero.querySelectorAll('.slide'));
   var panels = Array.prototype.slice.call(hero.querySelectorAll('.panel'));
+  var imgs   = slides.map(function(sl){ return sl.querySelector('.slide-bg'); });
   var index  = 0, locked = false;
+
+  /* görseller: ilk kare HTML'de yüklenir, kalanlar gerektiğinde */
+  function gorseliYukle(img){
+    if(!img || !img.dataset.src) return;
+    if(img.dataset.srcset) img.srcset = img.dataset.srcset;
+    img.src = img.dataset.src;
+    delete img.dataset.src;
+    delete img.dataset.srcset;
+  }
   var SPEED  = 700;                                   /* CSS'teki .7s ile aynı */
   var DECK   = window.matchMedia('(min-width:981px)');
 
@@ -28,6 +38,8 @@
     next = ((next % n) + n) % n;
     if(next === index) return;
     if(!dir) dir = (next === (index + 1) % n) ? 1 : (next === (index - 1 + n) % n ? -1 : (next > index ? 1 : -1));
+
+    gorseliYukle(imgs[next]);                         /* hedefin karesi hazır olsun */
 
     /* görsel tarafı: çapraz solma */
     slides[index].classList.remove('is-active');
@@ -109,6 +121,11 @@
     window.addEventListener('resize', sync);
     sync();
   });
+
+  /* sayfa oturduktan sonra kalan kareleri sessizce indir */
+  function kalanlariYukle(){ imgs.forEach(gorseliYukle); }
+  if(document.readyState === 'complete') setTimeout(kalanlariYukle, 800);
+  else window.addEventListener('load', function(){ setTimeout(kalanlariYukle, 800); });
 
   /* ilk kurulum */
   panels.forEach(function(el, i){

@@ -69,6 +69,15 @@ Kaynak gönderiler (video):
 - https://www.instagram.com/p/DYNUqZJINAL/  "+1 Mutlu Aydınlar Interior Müşterisi"
 - https://www.instagram.com/p/DPEnbNbiCZj/  "+1 Mutlu Müşteri"
 
+## Görseller
+Müşteri 2026-09-15'te `perde1..5.webp` yükledi (Instagram kırpması, ~1220² kare).
+`slide-1..5.webp` + `-sm` sürümleri bunlardan üretildi (3,61 MB → 0,54 MB).
+Slayt eşleşmesi: 1←perde2 (kumaş duvarı, manifestodaki "her dokuda"),
+2←perde1 (showroom geneli), 3←perde4 (perde sistemleri), 4←perde3 (mimari detay),
+5←perde5 (yüksek tavan teşhiri).
+⏳ Projeler sayfasındaki Antalya/Poyraz Home görseli hâlâ yer tutucu — eldeki
+fotoğrafların o projeye ait olup olmadığı teyit edilmedi.
+
 ## Hâlâ bekleyen metinler
 - 2. slayt gövdesi (Mimari Konsept Mağaza)
 - 4. slayt gövdesi (Tasarım · Üretim · Uygulama)

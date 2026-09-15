@@ -225,6 +225,23 @@ T = {
              "PLACEHOLDER — address, e-mail and opening hours are not set yet.",
              "PLACEHOLDER — Adresse, E-Mail und Öffnungszeiten stehen noch aus."),
 
+# ---------------------------------------------------------------- görsel alt metinleri
+"alt1": ("Mağaza duvarında asılı kumaş koleksiyonu",
+         "Fabric collection displayed on the showroom wall",
+         "Stoffkollektion an der Showroom-Wand"),
+"alt2": ("Aydınlatmaları ve danışma masasıyla perde mağazası showroom'u",
+         "Curtain store showroom with pendant lighting and a consultation table",
+         "Gardinen-Showroom mit Pendelleuchten und Beratungstisch"),
+"alt3": ("Korniş, stor ve desenli perde sistemlerinin sergilendiği duvar",
+         "Wall displaying curtain rails, roller blinds and patterned curtains",
+         "Wand mit Gardinenschienen, Rollos und gemusterten Vorhängen"),
+"alt4": ("Koyu dokulu duvar üzerinde ahşap lamel detayı ve merdiven",
+         "Timber batten detail and staircase against a dark textured wall",
+         "Holzlamellen-Detail und Treppe vor einer dunklen strukturierten Wand"),
+"alt5": ("Ray spotlarla aydınlatılmış yüksek tavanlı perde teşhiri",
+         "Floor-to-ceiling curtain display under track lighting",
+         "Deckenhohe Gardinenpräsentation unter Schienenbeleuchtung"),
+
 # ---------------------------------------------------------------- <head>
 "desc_home": ("Aydınlar Premium Group İnşaat Ltd. Şti. — Tüm Türkiye mimari konsept mağaza, "
               "anahtar teslim proje; tasarım, üretim ve uygulama.",
