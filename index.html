@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aydınlar Interior Design — Mimari Konsept Mağaza ve Anahtar Teslim Proje</title>
+<meta name="description" content="Aydınlar Premium Group İnşaat Ltd. Şti. — Tüm Türkiye mimari konsept mağaza, anahtar teslim proje; tasarım, üretim ve uygulama.">
+<link rel="icon" href="images/favicon.ico" sizes="48x48">
+<link rel="icon" href="images/favicon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="images/favicon-192.png">
+<meta property="og:title" content="Aydınlar Interior Design">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<style>
+/* ===========================================================
+   AYDINLAR Interior Design
+   Bölünmüş ekran slayt anasayfası.
+   Bağımlılık yok: jQuery/Swiper yok, harici istek yok, font yerel.
+   Paleti değiştirmek için yalnızca :root bloğuna dokun.
+   =========================================================== */
+
+@font-face{
+  font-family:"Jost";src:url("assets/fonts/jost-latin-ext.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap;
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face{
+  font-family:"Jost";src:url("assets/fonts/jost-latin.woff2") format("woff2");
+  font-weight:100 900;font-style:normal;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+:root{
+  --ink:#0d0d0e;          /* sayfa zemini */
+  --panel:#1b1b1d;        /* metin kutusu */
+  --accent:#c08b4e;       /* bronz vurgu — marka rengi netleşince burayı değiştir */
+  --text:#efedea;
+  --muted:#9c968e;
+  --head-h:78px;
+  --font:"Jost",ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{overflow-x:hidden}            /* body'ye overflow-x VERME: sticky başlık ölür */
+body{
+  background:var(--ink);color:var(--text);
+  font-family:var(--font);font-size:16px;line-height:1.75;font-weight:300;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ---------------- üst bar ---------------- */
+.site-head{
+  position:fixed;inset:0 0 auto 0;z-index:60;height:var(--head-h);
+  padding:0 clamp(18px,2.6vw,44px);padding-top:env(safe-area-inset-top,0px);
+  display:flex;align-items:center;gap:clamp(16px,3vw,44px);
+  background:linear-gradient(180deg,rgba(6,6,7,.72),rgba(6,6,7,0));
+}
+.brand{display:flex;align-items:center;gap:13px;min-width:0}
+.brand-logo{width:46px;height:auto;flex:0 0 auto;display:block}
+.brand-name{display:block;font-size:15px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;line-height:1.2}
+.brand-sub{display:block;font-size:10.5px;font-weight:300;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+.nav{margin-left:auto;display:flex;align-items:center;gap:2px;list-style:none;margin-block:0;padding:0}
+.nav a{
+  position:relative;display:block;padding:11px 15px;
+  font-size:12px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text);opacity:.82;transition:opacity .3s var(--ease);
+}
+.nav a::after{
+  content:"";position:absolute;left:15px;right:15px;bottom:4px;height:1px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--ease);
+}
+.nav a:hover{opacity:1}
+.nav a:hover::after{transform:scaleX(1)}
+.nav .is-current a{opacity:1;color:var(--accent)}
+.nav .is-current a::after{transform:scaleX(1)}
+.head-cta{
+  margin-left:clamp(10px,1.6vw,26px);padding:11px 20px;
+  border:1px solid rgba(255,255,255,.22);
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;
+  transition:border-color .3s var(--ease),background-color .3s var(--ease),color .3s var(--ease);
+}
+.head-cta:hover{background:var(--accent);border-color:var(--accent);color:#14100c}
+.nav-toggle{
+  margin-left:auto;display:none;width:44px;height:44px;
+  background:none;border:0;color:var(--text);cursor:pointer;
+}
+.nav-toggle i,.nav-toggle i::before,.nav-toggle i::after{
+  display:block;width:24px;height:1.5px;background:currentColor;content:"";position:relative
+}
+.nav-toggle i::before{top:-7px}.nav-toggle i::after{top:5.5px}
+
+/* ---------------- slayt sahnesi ----------------
+   3B derinlik: --px/--py fareyle güncellenen -1..1 aralığında iki sayı.
+   Katmanlar farklı hızda kayar → sahne gerçekten katmanlı hissedilir. */
+.hero{
+  position:relative;height:100svh;min-height:580px;overflow:hidden;
+  perspective:1600px;perspective-origin:58% 50%;
+  --px:0;--py:0;
+}
+.slide{
+  position:absolute;inset:0;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateZ(-140px) rotateY(5deg);transform-origin:70% 50%;
+  transition:opacity .9s var(--ease),transform 1.05s var(--ease),visibility .9s;
+}
+.slide.is-active{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+
+/* arkada duran dev marka işareti — en derin katman */
+.depth-mark{
+  position:absolute;z-index:1;right:-6%;top:50%;width:52%;aspect-ratio:769/394;
+  transform:translateY(-50%);
+  background:url("images/aydinlar-logo-white.png") center/contain no-repeat;
+  opacity:.05;pointer-events:none;
+  translate:calc(var(--px) * 26px) calc(var(--py) * 16px);
+  transition:translate .45s var(--ease);
+}
+
+/* --- sol yarı: görsel --- */
+.slide-media{position:absolute;inset:0 38% 0 0;overflow:hidden;background:#151517}
+.bg-shift{                       /* parallax burada, zoom içeride: ikisi çakışmasın */
+  position:absolute;inset:-5%;
+  translate:calc(var(--px) * -20px) calc(var(--py) * -13px);
+  transition:translate .5s var(--ease);
+}
+.slide-bg{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+  transform:scale(1.03);transition:transform 10s linear;
+}
+.slide.is-active .slide-bg{transform:scale(1.14)}        /* yavaş zoom */
+.slide-media::after{                                      /* sağ kenarın karaya erimesi */
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(8,8,9,.55) 0%,rgba(8,8,9,0) 26%,rgba(8,8,9,0) 58%,rgba(8,8,9,.95) 100%),
+    linear-gradient(0deg,rgba(8,8,9,.55) 0%,rgba(8,8,9,0) 42%);
+}
+/* görsel yokken duracak zarif yer tutucu */
+.slide-bg.is-placeholder{
+  background:
+    repeating-linear-gradient(135deg,rgba(255,255,255,.028) 0 2px,transparent 2px 9px),
+    radial-gradient(120% 90% at 30% 25%,#34302b 0%,#1e1c1a 55%,#121112 100%);
+}
+.slide-bg.is-placeholder::after{
+  content:attr(data-label);position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.34);
+  border:1px solid rgba(255,255,255,.16);padding:14px 22px;white-space:nowrap;
+}
+
+/* sayaç */
+.counter{
+  position:absolute;z-index:5;left:clamp(20px,2.8vw,54px);top:20vh;
+  translate:calc(var(--px) * 12px) calc(var(--py) * 9px);transition:translate .4s var(--ease);
+  display:flex;align-items:flex-start;gap:9px;
+}
+.counter b{font-size:clamp(34px,3.4vw,54px);line-height:1;font-weight:500;color:var(--accent)}
+.counter i{font-style:normal;font-size:13px;color:var(--text);opacity:.7;padding-top:7px;letter-spacing:.1em}
+.counter i::before{content:"";display:inline-block;width:20px;height:1px;background:currentColor;vertical-align:5px;margin-right:7px}
+
+/* dikey başlık */
+.slide-vtitle{
+  position:absolute;z-index:5;left:clamp(14px,2.3vw,48px);bottom:clamp(74px,10vh,128px);
+  margin:0;max-height:64vh;overflow:hidden;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  translate:calc(var(--px) * 16px) calc(var(--py) * 11px);transition:translate .4s var(--ease);
+  font-size:clamp(26px,3vw,46px);font-weight:500;line-height:1.06;letter-spacing:.005em;
+  text-shadow:0 2px 26px rgba(0,0,0,.6);
+}
+.slide-vtitle span{display:block;transform:translateY(38px);opacity:0;transition:none}
+.slide.is-active .slide-vtitle span{
+  transform:translateY(0);opacity:1;
+  transition:transform 1s var(--ease) .18s,opacity 1s var(--ease) .18s;
+}
+
+/* dikey sosyal şerit */
+.side-social{
+  position:absolute;z-index:6;right:calc(38% + 18px);bottom:clamp(20px,3vh,40px);
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--text);
+}
+.side-social a{writing-mode:vertical-rl;opacity:.7;transition:opacity .3s var(--ease),color .3s var(--ease)}
+.side-social a:hover{opacity:1;color:var(--accent)}
+.side-social::after{content:"";width:1px;height:56px;background:rgba(255,255,255,.34)}
+
+/* --- sağ yarı: metin paneli (görselin üstüne biner) --- */
+.slide-panel{
+  position:absolute;z-index:8;inset:10vh 3.4vw 10vh 46.5%;display:flex;
+  transform:rotateY(calc(var(--px) * -2.4deg)) rotateX(calc(var(--py) * 1.5deg));
+  transform-style:preserve-3d;
+  translate:calc(var(--px) * -13px) calc(var(--py) * -9px);
+  transition:transform .5s var(--ease),translate .5s var(--ease);
+}
+.frame{
+  flex:1;border:clamp(13px,1.45vw,23px) solid var(--accent);background:var(--panel);display:flex;
+  box-shadow:0 46px 90px -26px rgba(0,0,0,.85), 0 8px 24px rgba(0,0,0,.4);
+}
+.frame-inner{
+  flex:1;position:relative;overflow:hidden;
+  background:radial-gradient(120% 90% at calc(50% + var(--px) * 26%) calc(40% + var(--py) * 22%),
+             rgba(255,255,255,.055) 0%, rgba(255,255,255,0) 62%);
+  padding:clamp(30px,4.2vw,74px) clamp(50px,5.2vw,92px) clamp(30px,4vw,66px) clamp(30px,4.2vw,74px);
+}
+.panel-scroll{
+  height:100%;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  justify-content:safe center;   /* taşan içerikte üstten kırpmayı önler */
+}
+.panel-scroll::-webkit-scrollbar{display:none}
+
+/* panel içeriği: slayt geçişinde kademeli açılır */
+.panel-scroll>*{opacity:0;transform:translateY(24px)}
+.slide.is-active .panel-scroll>*{
+  opacity:1;transform:none;
+  transition:opacity .85s var(--ease),transform .85s var(--ease);
+}
+.slide.is-active .panel-scroll>:nth-child(1){transition-delay:.20s}
+.slide.is-active .panel-scroll>:nth-child(2){transition-delay:.32s}
+.slide.is-active .panel-scroll>:nth-child(3){transition-delay:.44s}
+.slide.is-active .panel-scroll>:nth-child(4){transition-delay:.56s}
+.slide.is-active .panel-scroll>:nth-child(5){transition-delay:.68s}
+.slide.is-active .panel-scroll>:nth-child(6){transition-delay:.80s}
+
+.panel-title{
+  margin:0 0 24px;font-size:clamp(25px,2.45vw,40px);font-weight:300;
+  line-height:1.24;letter-spacing:.06em;text-transform:uppercase;
+}
+.panel-kicker{
+  display:flex;align-items:center;gap:16px;margin:0 0 32px;
+  font-size:11px;font-weight:400;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);
+}
+.panel-kicker::after{content:"";flex:0 0 clamp(34px,4vw,62px);height:1px;background:var(--accent)}
+.panel-body{margin:0;color:#d9d5cf}
+.panel-body p{margin:0 0 17px}
+.panel-body p:last-child{margin-bottom:0}
+.panel-link{
+  display:inline-flex;align-items:center;gap:12px;margin-top:30px;
+  font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);
+}
+.panel-link::after{
+  content:"";width:34px;height:1px;background:currentColor;
+  transition:width .4s var(--ease);
+}
+.panel-link:hover::after{width:52px}
+
+/* manifesto: dizeler korunur */
+.manifesto p{line-height:2.05;color:#e4e0da}
+.manifesto .sig{
+  margin-top:26px;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);
+}
+
+/* işaretli liste — ✔️ emojisi yerine çizilmiş tik */
+.check-list{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:12px}
+.check-list li{position:relative;padding-left:32px;font-size:15px;color:#ded9d3}
+.check-list li::before{
+  content:"";position:absolute;left:2px;top:.52em;width:13px;height:7px;
+  border-left:1.6px solid var(--accent);border-bottom:1.6px solid var(--accent);
+  transform:rotate(-45deg);
+}
+.check-list .is-highlight{
+  margin-top:4px;padding:11px 16px 11px 32px;
+  border:1px solid rgba(192,139,78,.42);background:rgba(192,139,78,.09);color:var(--text);
+}
+.check-list .is-highlight::before{left:13px;top:1.15em}
+.panel-close{margin:0;font-size:15px;color:#ded9d3}
+
+/* öne çıkan alıntı */
+.pull-quote{
+  margin:0 0 30px;padding-left:22px;border-left:2px solid var(--accent);
+  font-size:clamp(15px,1.15vw,17px);line-height:1.85;color:#e4e0da;
+}
+
+/* referans listesi */
+.ref-groups{display:grid;gap:clamp(18px,2vw,26px);margin:0}
+.ref-group h4{
+  display:flex;align-items:center;gap:13px;margin:0 0 9px;
+  font-size:10.5px;font-weight:400;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);
+}
+.ref-group h4::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.14)}
+.ref-group ul{
+  list-style:none;margin:0;padding:0;
+  columns:2;column-gap:clamp(18px,2.4vw,34px);
+  font-size:14px;line-height:1.95;color:#d9d5cf;
+}
+.ref-group li{break-inside:avoid}
+.ref-count{
+  margin:0 0 26px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+}
+
+/* daire başlı kaydırma göstergesi */
+.scroll-hint{position:absolute;right:clamp(18px,2.1vw,36px);top:13%;bottom:13%;width:11px;pointer-events:none;opacity:0;transition:opacity .4s}
+.scroll-hint.is-on{opacity:1}
+.scroll-hint::before{content:"";position:absolute;left:5px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.5)}
+.scroll-hint b{
+  position:absolute;left:0;top:0;width:11px;height:11px;border-radius:50%;
+  border:1px solid #fff;background:var(--panel);transition:top .12s linear;
+}
+
+/* --- oklar --- */
+.hero-nav{
+  position:absolute;z-index:9;top:50%;left:33%;transform:translate(-50%,-50%);
+  display:flex;gap:clamp(26px,3.2vw,58px);
+}
+.hero-nav button{
+  position:relative;width:58px;height:26px;padding:0;
+  background:none;border:0;color:#fff;cursor:pointer;opacity:.88;
+  transition:opacity .3s var(--ease);
+}
+.hero-nav button:hover{opacity:1}
+.hero-nav svg{display:block;width:100%;height:100%;overflow:visible}
+.hero-nav .shaft{transition:transform .4s var(--ease)}
+.hero-nav button:hover .shaft{transform:scaleX(1.22)}
+.hero-nav [data-dir="-1"] .shaft{transform-origin:right}
+.hero-nav [data-dir="1"] .shaft{transform-origin:left}
+
+.hero-foot{
+  position:absolute;z-index:9;left:clamp(20px,2.8vw,54px);bottom:clamp(18px,2.6vh,34px);
+  margin:0;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--text);opacity:.6;
+}
+.hero-phone{
+  position:absolute;z-index:9;right:clamp(20px,3.4vw,54px);bottom:clamp(14px,2.2vh,28px);
+  font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  transition:color .3s var(--ease);
+}
+.hero-phone:hover{color:var(--accent)}
+
+/* ---------------- mobil: slayt yok, normal akış ---------------- */
+@media (max-width:980px){
+  .nav{
+    position:fixed;inset:var(--head-h) 0 auto 0;flex-direction:column;align-items:stretch;gap:0;
+    background:rgba(13,13,14,.98);padding:6px 0 14px;border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .nav a{padding:15px 26px}
+  .nav a::after{display:none}
+  .head-cta{display:none}
+  .nav-toggle{display:block}
+  .hero{height:auto;min-height:0;padding-top:var(--head-h);overflow:visible}
+  .slide{position:static;opacity:1;visibility:visible;pointer-events:auto;display:block;border-bottom:1px solid rgba(255,255,255,.07)}
+  .slide-media{position:relative;inset:auto;height:58vh;min-height:320px}
+  .slide-bg,.slide.is-active .slide-bg{transform:none;transition:none}
+  .counter{top:auto;bottom:18px;left:22px}
+  .slide-vtitle{
+    position:static;writing-mode:horizontal-tb;transform:none;max-height:none;overflow:visible;
+    padding:30px 22px 0;font-size:25px;text-shadow:none;
+  }
+  .slide-vtitle span,.slide.is-active .slide-vtitle span{transform:none;opacity:1}
+  .slide-panel{position:static;inset:auto;padding:20px 16px 44px}
+  .frame{border-width:9px}
+  .frame-inner{padding:28px 24px}
+  .panel-scroll{height:auto;overflow:visible;display:block}
+  .panel-scroll>*,.slide.is-active .panel-scroll>*{opacity:1;transform:none}
+  .scroll-hint,.hero-nav,.side-social,.hero-phone,.depth-mark{display:none}
+  .slide{transform:none}
+  .bg-shift{position:absolute;inset:0;translate:none}
+  .slide-panel{transform:none;translate:none}
+  .hero-foot{position:static;padding:26px 22px 34px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .slide.is-active .slide-bg{transform:scale(1.03)}
+  .slide{transform:none}
+  .bg-shift,.counter,.slide-vtitle,.slide-panel,.depth-mark{translate:none}
+  .slide-panel{transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <a class="brand" href="/" aria-label="Aydınlar Interior Design — ana sayfa">
+    <img class="brand-logo" src="images/aydinlar-logo-white.png" width="360" height="184"
+         alt="Aydınlar Interior Design logosu" decoding="async">
+    <span>
+      <span class="brand-name">Aydınlar</span>
+      <span class="brand-sub">Interior Design</span>
+    </span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menüyü aç"><i></i></button>
+  <ul class="nav" id="nav">
+    <li class="is-current"><a href="/">Anasayfa</a></li>
+    <li><a href="#">Hizmetler</a></li>
+    <li><a href="#">Projeler</a></li>
+    <li><a href="#">Hakkımızda</a></li>
+    <li><a href="#">İletişim</a></li>
+  </ul>
+  <a class="head-cta" href="tel:+905320597461">0532 059 74 61</a>
+</header>
+
+<main>
+<section class="hero" id="hero" aria-roledescription="carousel" aria-label="Tanıtım slaytları">
+
+  <!-- ============ SLAYT 1 ============ -->
+  <article class="slide is-active" aria-label="1 / 5">
+    <div class="slide-media">
+      <div class="bg-shift"><div class="slide-bg is-placeholder" data-label="Görsel 1 — Manifesto"></div></div>
+    </div>
+    <div class="counter"><b>1</b><i>5</i></div>
+    <h2 class="slide-vtitle"><span>Manifesto</span></h2>
+    <div class="slide-panel">
+      <div class="frame"><div class="frame-inner">
+        <div class="panel-scroll">
+          <h3 class="panel-title">Aydınlar Tasarım Manifestosu</h3>
+          <p class="panel-kicker">Tasarım Dili</p>
+          <div class="panel-body manifesto">
+            <p>Her çizgide, her dokuda ve her detayda;<br>
+               estetik ile fonksiyonun dengelendiği,<br>
+               mekânın sadece tasarlanmadığı,<br>
+               kimlik kazandığı bir yaklaşım.</p>
+            <p>Bizim için tasarım;<br>
+               görünenin ötesinde hissedilen,<br>
+               zamansız ve özgün bir imzadır.</p>
+            <p class="sig">Aydınlar Interior Design</p>
+          </div>
+        </div>
+        <div class="scroll-hint"><b></b></div>
+      </div></div>
+    </div>
+  </article>
+
+  <!-- ============ SLAYT 2 ============ -->
+  <article class="slide" aria-label="2 / 5" aria-hidden="true">
+    <div class="slide-media">
+      <div class="bg-shift"><div class="slide-bg is-placeholder" data-label="Görsel 1 — Konsept Mağaza"></div></div>
+    </div>
+    <div class="counter"><b>2</b><i>5</i></div>
+    <h2 class="slide-vtitle"><span>Konsept Mağaza</span></h2>
+    <div class="slide-panel">
+      <div class="frame"><div class="frame-inner">
+        <div class="panel-scroll">
+          <h3 class="panel-title">Mimari Konsept Mağaza</h3>
+          <p class="panel-kicker">Aydınlar Premium Group</p>
+          <div class="panel-body">
+            <p>PLACEHOLDER — bu paragrafı sen yazacaksın. Markanın mağaza konseptini nasıl kurguladığınızı anlatan giriş metni buraya gelecek.</p>
+          </div>
+          <a class="panel-link" href="#">Hizmetlerimiz</a>
+        </div>
+        <div class="scroll-hint"><b></b></div>
+      </div></div>
+    </div>
+  </article>
+
+  <!-- ============ SLAYT 3 ============ -->
+  <article class="slide" aria-label="3 / 5" aria-hidden="true">
+    <div class="slide-media">
+      <div class="bg-shift"><div class="slide-bg is-placeholder" data-label="Görsel 2 — Anahtar Teslim"></div></div>
+    </div>
+    <div class="counter"><b>3</b><i>5</i></div>
+    <h2 class="slide-vtitle"><span>Anahtar Teslim</span></h2>
+    <div class="slide-panel">
+      <div class="frame"><div class="frame-inner">
+        <div class="panel-scroll">
+          <h3 class="panel-title">Mağaza Kurmak Artık Çok Kolay</h3>
+          <p class="panel-kicker">Anahtar Teslim</p>
+          <div class="panel-body">
+            <p>Hayalinizdeki perde ve halı mağazasını, anahtar teslim şekilde kuruyoruz.</p>
+          </div>
+          <ul class="check-list">
+            <li>Uygun fiyat</li>
+            <li>Güvenilir hizmet</li>
+            <li>Modern tasarım showroomlar</li>
+            <li class="is-highlight">%30 peşin, 12 ay taksit imkânı</li>
+          </ul>
+          <p class="panel-close">Siz sadece hayal edin, gerisini profesyonel ekibimiz halletsin.</p>
+          <a class="panel-link" href="tel:+905320597461">Proje Yetkilisi</a>
+        </div>
+        <div class="scroll-hint"><b></b></div>
+      </div></div>
+    </div>
+  </article>
+
+  <!-- ============ SLAYT 4 ============ -->
+  <article class="slide" aria-label="4 / 5" aria-hidden="true">
+    <div class="slide-media">
+      <div class="bg-shift"><div class="slide-bg is-placeholder" data-label="Görsel 3 — Üretim"></div></div>
+    </div>
+    <div class="counter"><b>4</b><i>5</i></div>
+    <h2 class="slide-vtitle"><span>Üretim &amp; Uygulama</span></h2>
+    <div class="slide-panel">
+      <div class="frame"><div class="frame-inner">
+        <div class="panel-scroll">
+          <h3 class="panel-title">Tasarım · Üretim · Uygulama</h3>
+          <p class="panel-kicker">Tek Elden</p>
+          <div class="panel-body">
+            <p>PLACEHOLDER — kendi üretiminizi ve sahadaki uygulama ekibinizi anlatan metin.</p>
+          </div>
+          <a class="panel-link" href="#">Atölye</a>
+        </div>
+        <div class="scroll-hint"><b></b></div>
+      </div></div>
+    </div>
+  </article>
+
+  <!-- ============ SLAYT 5 ============ -->
+  <article class="slide" aria-label="5 / 5" aria-hidden="true">
+    <div class="slide-media">
+      <div class="bg-shift"><div class="slide-bg is-placeholder" data-label="Görsel 4 — Referanslar"></div></div>
+    </div>
+    <div class="counter"><b>5</b><i>5</i></div>
+    <h2 class="slide-vtitle"><span>Referanslar</span></h2>
+    <div class="slide-panel">
+      <div class="frame"><div class="frame-inner">
+        <div class="panel-scroll">
+          <h3 class="panel-title">Referanslarımız</h3>
+          <p class="panel-kicker">21 Marka</p>
+          <blockquote class="pull-quote">
+            Biz ne kadar kendimizi anlatmaya ya da ıspat etmeye çalışsak da
+            referanslarımız bizi bizden daha iyi bilir ve anlatır.
+          </blockquote>
+          <div class="ref-groups">
+            <div class="ref-group">
+              <h4>Perde &amp; Ev Tekstili</h4>
+              <ul>
+                <li>Poyraz Perde</li><li>Emre Perde</li><li>Model Perde</li><li>Koza Perde</li>
+                <li>Çizgi Perde</li><li>Erva Perde</li><li>Mevsim Perde</li><li>Alis Perde</li>
+                <li>BYM Perde</li><li>Emart Perde</li>
+              </ul>
+            </div>
+            <div class="ref-group">
+              <h4>Konsept Home Mağaza</h4>
+              <ul>
+                <li>Valeria Home</li><li>Glinza Home</li><li>Velmora Home</li><li>Home Project</li>
+              </ul>
+            </div>
+            <div class="ref-group">
+              <h4>Yeme &amp; İçme</h4>
+              <ul>
+                <li>Komagene</li><li>Tatlım Baklava</li><li>Devran Döner</li>
+              </ul>
+            </div>
+            <div class="ref-group">
+              <h4>Ofis, Atölye &amp; Salon</h4>
+              <ul>
+                <li>Ayd Office</li><li>Ayd Atölye</li><li>Özeller Ofis</li><li>Özgül Kuaför</li>
+              </ul>
+            </div>
+          </div>
+          <a class="panel-link" href="#">Tüm Projeler</a>
+        </div>
+        <div class="scroll-hint"><b></b></div>
+      </div></div>
+    </div>
+  </article>
+
+  <div class="depth-mark" aria-hidden="true"></div>
+
+  <nav class="hero-nav" aria-label="Slayt gezinmesi">
+    <button type="button" data-dir="-1" aria-label="Önceki slayt">
+      <svg viewBox="0 0 58 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="square" aria-hidden="true">
+        <path class="shaft" d="M57 10H3"/><path d="M3 10l8.5-7M3 10l8.5 7"/>
+      </svg>
+    </button>
+    <button type="button" data-dir="1" aria-label="Sonraki slayt">
+      <svg viewBox="0 0 58 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="square" aria-hidden="true">
+        <path class="shaft" d="M1 10h54"/><path d="M55 10l-8.5-7M55 10l-8.5 7"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="side-social">
+    <a href="https://www.instagram.com/aydinlar.interior.design/" target="_blank" rel="noopener">Instagram</a>
+  </div>
+
+  <p class="hero-foot">© Aydınlar Premium Group İnşaat Ltd. Şti. 2026</p>
+  <a class="hero-phone" href="tel:+905320597461">Proje Yetkilisi · 0532 059 74 61</a>
+</section>
+</main>
+
+<script>
+(function(){
+  var hero    = document.getElementById('hero');
+  var slides  = Array.prototype.slice.call(hero.querySelectorAll('.slide'));
+  var index   = 0, locked = false;
+  var DECK    = window.matchMedia('(min-width:981px)');
+
+  function show(next){
+    if(!DECK.matches) return;
+    next = (next + slides.length) % slides.length;
+    if(next === index) return;
+    slides[index].classList.remove('is-active');
+    slides[index].setAttribute('aria-hidden','true');
+    index = next;
+    slides[index].classList.add('is-active');
+    slides[index].removeAttribute('aria-hidden');
+    if(history.replaceState) history.replaceState(null,'','#slayt-'+(index+1));
+    locked = true;
+    setTimeout(function(){ locked = false; }, 900);
+  }
+
+  hero.querySelectorAll('.hero-nav button').forEach(function(b){
+    b.addEventListener('click', function(){ show(index + Number(b.dataset.dir)); });
+  });
+
+  /* tekerlek: sayfa kaymaz, slayt döner.
+     Metin kutusu kendi içinde kayabiliyorsa önce ona hakkını ver. */
+  hero.addEventListener('wheel', function(e){
+    if(!DECK.matches) return;
+    var box = e.target.closest ? e.target.closest('.panel-scroll') : null;
+    if(box && box.scrollHeight > box.clientHeight + 2){
+      var atTop = box.scrollTop <= 0;
+      var atEnd = box.scrollTop + box.clientHeight >= box.scrollHeight - 1;
+      if((e.deltaY < 0 && !atTop) || (e.deltaY > 0 && !atEnd)) return;
+    }
+    e.preventDefault();
+    if(locked || Math.abs(e.deltaY) < 6) return;
+    show(index + (e.deltaY > 0 ? 1 : -1));
+  }, {passive:false});
+
+  document.addEventListener('keydown', function(e){
+    if(!DECK.matches) return;
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown'){ e.preventDefault(); show(index+1); }
+    else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp'){ e.preventDefault(); show(index-1); }
+  });
+
+  var y0=null, x0=null;
+  hero.addEventListener('touchstart', function(e){ y0=e.touches[0].clientY; x0=e.touches[0].clientX; }, {passive:true});
+  hero.addEventListener('touchend', function(e){
+    if(!DECK.matches || y0===null) return;
+    var dy=y0-e.changedTouches[0].clientY, dx=x0-e.changedTouches[0].clientX;
+    var d = Math.abs(dx) > Math.abs(dy) ? dx : dy;
+    if(Math.abs(d) > 45) show(index + (d > 0 ? 1 : -1));
+    y0=x0=null;
+  }, {passive:true});
+
+  var m = /^#slayt-(\d+)$/.exec(location.hash);
+  if(m && slides[m[1]-1]) show(Number(m[1]) - 1);
+
+  /* kaydırma göstergesi: yalnız taşan metinde görünür */
+  hero.querySelectorAll('.panel-scroll').forEach(function(box){
+    var hint = box.parentNode.querySelector('.scroll-hint');
+    var dot  = hint && hint.querySelector('b');
+    if(!dot) return;
+    function sync(){
+      var max = box.scrollHeight - box.clientHeight;
+      hint.classList.toggle('is-on', max > 4);
+      dot.style.top = (max > 4 ? (box.scrollTop / max) * 100 : 0) + '%';
+    }
+    box.addEventListener('scroll', sync);
+    window.addEventListener('resize', sync);
+    sync();
+  });
+
+  /* 3B derinlik: imleç konumunu -1..1 aralığına indir, rAF ile yaz */
+  var fine = window.matchMedia('(hover:hover) and (pointer:fine)');
+  var soft = window.matchMedia('(prefers-reduced-motion:reduce)');
+  if(fine.matches && !soft.matches){
+    var px=0, py=0, queued=false;
+    hero.addEventListener('pointermove', function(e){
+      var r = hero.getBoundingClientRect();
+      px = (e.clientX - r.left) / r.width  * 2 - 1;
+      py = (e.clientY - r.top)  / r.height * 2 - 1;
+      if(queued) return;
+      queued = true;
+      requestAnimationFrame(function(){
+        hero.style.setProperty('--px', px.toFixed(3));
+        hero.style.setProperty('--py', py.toFixed(3));
+        queued = false;
+      });
+    });
+    hero.addEventListener('pointerleave', function(){
+      hero.style.setProperty('--px','0'); hero.style.setProperty('--py','0');
+    });
+  }
+
+  /* mobil menü */
+  var tog = document.querySelector('.nav-toggle'), nav = document.getElementById('nav');
+  function syncNav(){ nav.hidden = !DECK.matches; tog.setAttribute('aria-expanded','false'); }
+  tog.addEventListener('click', function(){
+    var open = nav.hidden;
+    nav.hidden = !open;
+    tog.setAttribute('aria-expanded', String(open));
+  });
+  DECK.addEventListener ? DECK.addEventListener('change', syncNav) : window.addEventListener('resize', syncNav);
+  syncNav();
+})();
+</script>
+</body>
+</html>
