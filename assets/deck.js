@@ -17,7 +17,8 @@
       delete img.dataset.srcset;
     });
   }
-  var SPEED  = 850;                                   /* CSS'teki .85s ile aynı */
+  var SPEED  = 1100;                                  /* CSS'teki --kup-sure ile aynı */
+  var girisT = null;                                  /* içeriğin yükselme animasyonu */
   var DECK   = window.matchMedia('(min-width:981px)');
 
   /* küp derinliği = kutunun genişliği; yoksa dönüş yamuk görünür */
@@ -44,21 +45,34 @@
 
     gorseliYukle(imgs[next]);                         /* hedefin karesi hazır olsun */
 
-    /* görsel tarafı: çapraz solma */
-    slides[index].classList.remove('is-active');
-    slides[index].setAttribute('aria-hidden','true');
+    var geri = dir < 0;
+
+    /* görsel tarafı: giden kare üstte kalıp perde gibi çekilir */
+    var eski = slides[index];
+    eski.classList.remove('is-active');
+    eski.classList.toggle('geri', geri);
+    eski.classList.add('is-leaving');
+    eski.setAttribute('aria-hidden','true');
 
     /* kutu tarafı: küp 90° döner */
     var out = panels[index], inc = panels[next];
+    clearTimeout(girisT);
+    panels.forEach(function(p){ p.classList.remove('is-entering'); });
     out.classList.remove('is-active');
     out.classList.add('is-leaving');
     out.style.setProperty('--a', (dir > 0 ? -90 : 90) + 'deg');
     out.style.setProperty('--sh','.85');              /* dönüp giden yüz kararır */
 
-    park(inc, dir > 0 ? 90 : -90);
+    park(inc, dir > 0 ? 90 : -90);                    /* reflow burada: animasyonlar baştan başlar */
     inc.style.setProperty('--a','0deg');
     inc.style.setProperty('--sh','0');                /* öne gelen yüz aydınlanır */
-    inc.classList.add('is-active');
+    inc.classList.toggle('geri', geri);
+    inc.classList.add('is-active', 'is-entering');
+    girisT = setTimeout(function(){ inc.classList.remove('is-entering'); }, 1800);
+
+    hero.classList.remove('is-turning');
+    void hero.offsetWidth;
+    hero.classList.add('is-turning');                 /* küpün geri çekilip öne gelmesi */
 
     index = next;
     slides[index].classList.add('is-active');
@@ -69,6 +83,11 @@
     setTimeout(function(){
       out.classList.remove('is-leaving');
       park(out, 90);
+      eski.classList.add('park');                     /* gizliyken konumunu geçişsiz sıfırla */
+      eski.classList.remove('is-leaving');
+      void eski.offsetWidth;
+      eski.classList.remove('park');
+      hero.classList.remove('is-turning');
       locked = false;
     }, SPEED);
   }
@@ -139,6 +158,22 @@
   sizeCube();
   window.addEventListener('resize', sizeCube);
   if(DECK.addEventListener) DECK.addEventListener('change', sizeCube);
+
+  /* mobil: deste yok; kareler ekrana girerken perde gibi açılır.
+     İlk ekranda görünenler hemen açık sayılır — yüklenişte kırpılıp titremesin. */
+  if(!DECK.matches && 'IntersectionObserver' in window &&
+     !window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    var gozcu = new IntersectionObserver(function(kayitlar){
+      kayitlar.forEach(function(k){
+        if(k.isIntersecting){ k.target.classList.add('is-in'); gozcu.unobserve(k.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.05});
+    hero.querySelectorAll('.slide-media').forEach(function(el){
+      if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('is-in');
+      else gozcu.observe(el);
+    });
+    hero.classList.add('medya-gozcu');
+  }
 
   var m = /^#slayt-(\d+)$/.exec(location.hash);
   if(m && slides[m[1]-1]) show(Number(m[1]) - 1, 1);

@@ -45,6 +45,8 @@
   --text:"Instrument",ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
   --ease-2:cubic-bezier(.62,.02,.2,1);
+  --kup-sure:1.1s;              /* deck.js'teki SURE ile aynı */
+  --ease-kup:cubic-bezier(.77,0,.18,1);   /* ağır başlar, yumuşak oturur */
 }
 
 *{box-sizing:border-box}
@@ -205,16 +207,32 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.025em;ma
 .slide{
   position:absolute;inset:0;z-index:2;
   opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .75s var(--ease),visibility .75s;
 }
 .slide.is-active{opacity:1;visibility:visible;pointer-events:auto}
+/* Geçiş: giden kare yeninin ÜSTÜNDE kalır ve perde gibi yana çekilir;
+   altındaki yeni kare yakınlaşmadan yavaşça oturur. Yön .geri sınıfıyla döner. */
+.slide.is-leaving{opacity:1;visibility:visible;z-index:3}
+.slide.is-leaving .slide-media{animation:perde-ileri var(--kup-sure) var(--ease-kup) both}
+.slide.is-leaving.geri .slide-media{animation-name:perde-geri}
+@keyframes perde-ileri{from{clip-path:inset(0 0 0 0 round 20px)}to{clip-path:inset(0 100% 0 0 round 20px)}}
+@keyframes perde-geri{from{clip-path:inset(0 0 0 0 round 20px)}to{clip-path:inset(0 0 0 100% round 20px)}}
 
 .slide-media{
   position:absolute;z-index:1;inset:clamp(14px,1.6vw,26px) 44% var(--dock) clamp(14px,1.6vw,26px);
   overflow:hidden;border-radius:var(--r);background:var(--void-2);
   box-shadow:0 40px 90px -40px rgba(0,0,0,.9);
 }
-.slide-bg{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover}
+.slide-bg{
+  position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;
+  scale:1.14;
+  transition:scale 7s cubic-bezier(.16,.6,.2,1),
+             translate var(--kup-sure) var(--ease-kup),opacity var(--kup-sure) var(--ease-kup);
+}
+.slide.is-active .slide-bg{scale:1}                       /* yavaş yakınlaşma → oturma */
+@starting-style{.slide.is-active .slide-bg{scale:1.08}}   /* ilk açılışta da hafifçe otursun */
+.slide.is-leaving .slide-bg{translate:-14% 0;opacity:.45}  /* çekilirken kayar ve kararır */
+.slide.is-leaving.geri .slide-bg{translate:14% 0}
+.slide.park .slide-bg{transition:none}                    /* gizlenince anında sıfırlanır */
 .slide-media::after{                       /* okunabilirlik için hafif vinyet */
   content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
   background:
@@ -230,6 +248,7 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.025em;ma
   transition:opacity 1s var(--ease);
 }
 .slide.is-active .bloom{opacity:.3}
+.slide.is-leaving .bloom{opacity:0;transition-duration:.45s}
 .bloom img{
   width:100%;height:100%;object-fit:cover;display:block;
   filter:blur(90px) saturate(190%);transform:scale(1.25);
@@ -240,6 +259,12 @@ h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-.025em;ma
   position:absolute;z-index:6;left:clamp(30px,3.4vw,58px);top:calc(var(--head-h) + 5vh);
   display:flex;align-items:baseline;gap:10px;
   font-family:var(--display);
+  opacity:0;translate:0 12px;
+  transition:opacity .3s var(--ease),translate .3s var(--ease);
+}
+.slide.is-active .counter{
+  opacity:1;translate:0 0;
+  transition:opacity .8s var(--ease) .55s,translate .8s var(--ease) .55s;
 }
 .counter b{font-size:clamp(30px,3vw,54px);line-height:1;font-weight:600;color:var(--copper);letter-spacing:-.04em}
 .counter i{
@@ -258,10 +283,13 @@ p.slide-vtitle{margin:0}
   font-size:clamp(24px,2.5vw,50px);font-weight:600;line-height:1.05;letter-spacing:-.03em;
   text-shadow:0 2px 30px rgba(0,0,0,.7);
 }
-.slide-vtitle span{display:block;transform:translateY(40px);opacity:0}
+.slide-vtitle span{
+  display:block;transform:translateY(40px);opacity:0;
+  transition:transform .35s var(--ease),opacity .3s var(--ease);
+}
 .slide.is-active .slide-vtitle span{
   transform:translateY(0);opacity:1;
-  transition:transform .9s var(--ease) .1s,opacity .9s var(--ease) .1s;
+  transition:transform 1s var(--ease) .5s,opacity 1s var(--ease) .5s;
 }
 
 /* --- metin kutusu: küpün yüzleri ---
@@ -271,7 +299,7 @@ p.slide-vtitle{margin:0}
   position:absolute;z-index:10;inset:clamp(52px,7vh,96px) clamp(14px,1.6vw,26px) max(clamp(52px,7vh,96px),var(--dock)) 46%;
   --a:90deg;--sh:.9;
   transform:translateZ(calc(var(--cw) / -2)) rotateY(var(--a)) translateZ(calc(var(--cw) / 2));
-  transition:transform .85s var(--ease-2);
+  transition:transform var(--kup-sure) var(--ease-kup);
   backface-visibility:hidden;will-change:transform;
   opacity:0;pointer-events:none;display:flex;
 }
@@ -282,12 +310,19 @@ p.slide-vtitle{margin:0}
 .panel::after{                           /* dönen yüzün karartması */
   content:"";position:absolute;inset:0;z-index:5;pointer-events:none;border-radius:var(--r);
   background:linear-gradient(118deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.88) 48%,rgba(0,0,0,.99) 100%);
-  opacity:var(--sh);transition:opacity .85s var(--ease-2);
+  opacity:var(--sh);transition:opacity var(--kup-sure) var(--ease-kup);
+}
+/* dönüş boyunca küp hafifçe geri çekilip öne gelir (kamera nefesi) */
+.hero.is-turning .panel.is-active,.hero.is-turning .panel.is-leaving{animation:kup-nefes var(--kup-sure) both}
+@keyframes kup-nefes{
+  0%  {translate:0 0 0;animation-timing-function:cubic-bezier(.45,0,.55,1)}
+  50% {translate:0 0 -170px;animation-timing-function:cubic-bezier(.45,0,.55,1)}
+  100%{translate:0 0 0}
 }
 
 .frame{
-  flex:1;display:flex;border-radius:var(--r);overflow:hidden;
-  transform:scale(.955);transition:transform .9s cubic-bezier(.3,1.05,.4,1);
+  flex:1;display:flex;position:relative;border-radius:var(--r);overflow:hidden;
+  transform:scale(.955);transition:transform 1.1s cubic-bezier(.3,1.05,.4,1);
   background:
     linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.03) 46%,rgba(255,255,255,.055)),
     rgba(9,9,11,.83);          /* koyu taban — camın arkası parlasa da metin okunur */
@@ -296,6 +331,31 @@ p.slide-vtitle{margin:0}
     inset 0 0 0 1px rgba(255,255,255,.1),
     0 50px 100px -40px rgba(0,0,0,.95);
 }
+.frame::before{                          /* yüz öne gelirken camın üstünden geçen ışık */
+  content:"";position:absolute;z-index:3;inset:0 -80%;pointer-events:none;opacity:0;
+  background:linear-gradient(102deg,transparent 40%,rgba(255,255,255,.04) 46%,
+    rgba(255,238,222,.13) 50%,rgba(255,255,255,.035) 54%,transparent 60%);
+}
+.panel.is-entering .frame::before{animation:parilti 1.5s var(--ease-kup) .1s both}
+.panel.is-entering.geri .frame::before{animation-name:parilti-geri}
+@keyframes parilti{0%{translate:-45% 0;opacity:0}30%{opacity:1}100%{translate:45% 0;opacity:0}}
+@keyframes parilti-geri{0%{translate:45% 0;opacity:0}30%{opacity:1}100%{translate:-45% 0;opacity:0}}
+
+/* içerik: yüz otururken satır satır yükselir */
+.panel.is-entering .panel-scroll > *{
+  animation:icerik-gel .85s var(--ease) both;
+  animation-delay:calc(.34s + var(--s,0) * 70ms);
+}
+.panel-scroll > :nth-child(2){--s:1}
+.panel-scroll > :nth-child(3){--s:2}
+.panel-scroll > :nth-child(4){--s:3}
+.panel-scroll > :nth-child(5){--s:4}
+.panel-scroll > :nth-child(6){--s:5}
+@keyframes icerik-gel{
+  from{opacity:0;translate:0 22px;filter:blur(5px)}
+  to  {opacity:1;translate:0 0;filter:blur(0)}
+}
+
 .frame-inner{
   flex:1;position:relative;overflow:hidden;
   padding:clamp(28px,3.4vw,64px) var(--pad-x);
@@ -634,6 +694,15 @@ p.slide-vtitle{margin:0}
   .hero-nav button{display:none}          /* mobilde deste yok, yalnız sosyal kalır */
   .hero-nav .ayrac{display:none}
   .hero-foot{position:static;order:99;padding:18px 20px 30px;text-align:left;line-height:1.7}
+
+  /* masaüstü geçişleri mobilde kapalı — kareler alt alta, hepsi görünür */
+  .slide-bg{scale:1;translate:none;transition:none}
+  .counter{opacity:1;translate:none;transition:none}
+  /* bunun yerine kare ekrana girerken perde gibi açılır (deck.js .medya-gozcu ekler) */
+  .medya-gozcu .slide-media{clip-path:inset(0 0 0 0 round 20px);transition:clip-path 1.3s var(--ease-kup)}
+  .medya-gozcu .slide-media:not(.is-in){clip-path:inset(12% 9% 12% 9% round 20px)}
+  .medya-gozcu .slide-media .slide-bg{transition:scale 1.8s cubic-bezier(.16,.6,.2,1)}
+  .medya-gozcu .slide-media:not(.is-in) .slide-bg{scale:1.22}
 }
 @media (max-width:560px){
   .page-hero h1{font-size:clamp(30px,9vw,44px)}
@@ -643,4 +712,8 @@ p.slide-vtitle{margin:0}
   html{scroll-behavior:auto}
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .js-reveal .reveal{opacity:1;transform:none}
+  .slide-bg{scale:1!important;translate:none!important}
+  .slide.is-leaving{visibility:hidden}
+  .slide.is-leaving .slide-media,.hero.is-turning .panel,
+  .panel.is-entering .frame::before,.panel.is-entering .panel-scroll > *{animation:none!important}
 }
