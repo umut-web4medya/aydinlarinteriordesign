@@ -221,6 +221,7 @@ p.slide-vtitle{margin:0}
 .slide-vtitle{
   position:absolute;z-index:6;left:clamp(26px,2.8vw,50px);bottom:clamp(64px,8vh,110px);
   margin:0;max-height:58vh;overflow:hidden;
+  font-family:var(--display);   /* <h2>'den <p>'ye dönünce başlık fontunu kaybetmişti */
   writing-mode:vertical-rl;transform:rotate(180deg);
   font-size:clamp(24px,2.5vw,50px);font-weight:600;line-height:1.05;letter-spacing:-.03em;
   text-shadow:0 2px 30px rgba(0,0,0,.7);
