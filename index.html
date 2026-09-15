@@ -97,12 +97,10 @@ button{font:inherit}
 .nav-toggle i::before{top:-7px}.nav-toggle i::after{top:5.5px}
 
 /* ---------------- slayt sahnesi ----------------
-   3B derinlik: --px/--py fareyle güncellenen -1..1 aralığında iki sayı.
-   Katmanlar farklı hızda kayar → sahne gerçekten katmanlı hissedilir. */
+   Derinlik yalnız slayt geçişinde: yeni slayt uzaktan gelip yerine oturur. */
 .hero{
   position:relative;height:100svh;min-height:580px;overflow:hidden;
   perspective:1600px;perspective-origin:58% 50%;
-  --px:0;--py:0;
 }
 .slide{
   position:absolute;inset:0;
@@ -118,17 +116,11 @@ button{font:inherit}
   transform:translateY(-50%);
   background:url("images/aydinlar-logo-white.png") center/contain no-repeat;
   opacity:.05;pointer-events:none;
-  translate:calc(var(--px) * 26px) calc(var(--py) * 16px);
-  transition:translate .45s var(--ease);
 }
 
 /* --- sol yarı: görsel --- */
 .slide-media{position:absolute;inset:0 38% 0 0;overflow:hidden;background:#151517}
-.bg-shift{                       /* parallax burada, zoom içeride: ikisi çakışmasın */
-  position:absolute;inset:-5%;
-  translate:calc(var(--px) * -20px) calc(var(--py) * -13px);
-  transition:translate .5s var(--ease);
-}
+.bg-shift{position:absolute;inset:0}
 .slide-bg{
   position:absolute;inset:0;background-size:cover;background-position:center;
   transform:scale(1.03);transition:transform 10s linear;
@@ -155,7 +147,6 @@ button{font:inherit}
 /* sayaç */
 .counter{
   position:absolute;z-index:5;left:clamp(20px,2.8vw,54px);top:20vh;
-  translate:calc(var(--px) * 12px) calc(var(--py) * 9px);transition:translate .4s var(--ease);
   display:flex;align-items:flex-start;gap:9px;
 }
 .counter b{font-size:clamp(34px,3.4vw,54px);line-height:1;font-weight:500;color:var(--accent)}
@@ -167,7 +158,6 @@ button{font:inherit}
   position:absolute;z-index:5;left:clamp(14px,2.3vw,48px);bottom:clamp(74px,10vh,128px);
   margin:0;max-height:64vh;overflow:hidden;
   writing-mode:vertical-rl;transform:rotate(180deg);
-  translate:calc(var(--px) * 16px) calc(var(--py) * 11px);transition:translate .4s var(--ease);
   font-size:clamp(26px,3vw,46px);font-weight:500;line-height:1.06;letter-spacing:.005em;
   text-shadow:0 2px 26px rgba(0,0,0,.6);
 }
@@ -188,21 +178,14 @@ button{font:inherit}
 .side-social::after{content:"";width:1px;height:56px;background:rgba(255,255,255,.34)}
 
 /* --- sağ yarı: metin paneli (görselin üstüne biner) --- */
-.slide-panel{
-  position:absolute;z-index:8;inset:10vh 3.4vw 10vh 46.5%;display:flex;
-  transform:rotateY(calc(var(--px) * -2.4deg)) rotateX(calc(var(--py) * 1.5deg));
-  transform-style:preserve-3d;
-  translate:calc(var(--px) * -13px) calc(var(--py) * -9px);
-  transition:transform .5s var(--ease),translate .5s var(--ease);
-}
+.slide-panel{position:absolute;z-index:8;inset:10vh 3.4vw 10vh 46.5%;display:flex}
 .frame{
   flex:1;border:clamp(13px,1.45vw,23px) solid var(--accent);background:var(--panel);display:flex;
   box-shadow:0 46px 90px -26px rgba(0,0,0,.85), 0 8px 24px rgba(0,0,0,.4);
 }
 .frame-inner{
   flex:1;position:relative;overflow:hidden;
-  background:radial-gradient(120% 90% at calc(50% + var(--px) * 26%) calc(40% + var(--py) * 22%),
-             rgba(255,255,255,.055) 0%, rgba(255,255,255,0) 62%);
+  background:radial-gradient(120% 90% at 42% 30%, rgba(255,255,255,.05) 0%, rgba(255,255,255,0) 64%);
   padding:clamp(30px,4.2vw,74px) clamp(50px,5.2vw,92px) clamp(30px,4vw,66px) clamp(30px,4.2vw,74px);
 }
 .panel-scroll{
@@ -356,16 +339,12 @@ button{font:inherit}
   .panel-scroll>*,.slide.is-active .panel-scroll>*{opacity:1;transform:none}
   .scroll-hint,.hero-nav,.side-social,.hero-phone,.depth-mark{display:none}
   .slide{transform:none}
-  .bg-shift{position:absolute;inset:0;translate:none}
-  .slide-panel{transform:none;translate:none}
   .hero-foot{position:static;padding:26px 22px 34px}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .slide.is-active .slide-bg{transform:scale(1.03)}
   .slide{transform:none}
-  .bg-shift,.counter,.slide-vtitle,.slide-panel,.depth-mark{translate:none}
-  .slide-panel{transform:none}
 }
 </style>
 </head>
@@ -643,28 +622,6 @@ button{font:inherit}
     window.addEventListener('resize', sync);
     sync();
   });
-
-  /* 3B derinlik: imleç konumunu -1..1 aralığına indir, rAF ile yaz */
-  var fine = window.matchMedia('(hover:hover) and (pointer:fine)');
-  var soft = window.matchMedia('(prefers-reduced-motion:reduce)');
-  if(fine.matches && !soft.matches){
-    var px=0, py=0, queued=false;
-    hero.addEventListener('pointermove', function(e){
-      var r = hero.getBoundingClientRect();
-      px = (e.clientX - r.left) / r.width  * 2 - 1;
-      py = (e.clientY - r.top)  / r.height * 2 - 1;
-      if(queued) return;
-      queued = true;
-      requestAnimationFrame(function(){
-        hero.style.setProperty('--px', px.toFixed(3));
-        hero.style.setProperty('--py', py.toFixed(3));
-        queued = false;
-      });
-    });
-    hero.addEventListener('pointerleave', function(){
-      hero.style.setProperty('--px','0'); hero.style.setProperty('--py','0');
-    });
-  }
 
   /* mobil menü */
   var tog = document.querySelector('.nav-toggle'), nav = document.getElementById('nav');
