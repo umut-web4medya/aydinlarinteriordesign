@@ -278,10 +278,10 @@ p.slide-vtitle{margin:0}
 }
 .panel-kicker::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--copper)}
 .panel-title{
-  margin:0 0 clamp(18px,2vw,30px);
+  margin:0 0 clamp(18px,2vw,30px);max-width:20ch;
   font-size:clamp(27px,2.9vw,56px);font-weight:600;line-height:1.04;letter-spacing:-.035em;
 }
-.panel-body{margin:0;font-size:clamp(14.5px,1.05vw,17px);line-height:1.75;color:#ddd8d1}
+.panel-body{margin:0;max-width:62ch;font-size:clamp(14.5px,1.05vw,17px);line-height:1.75;color:#ddd8d1}
 .panel-body p{margin:0 0 1em}
 .panel-body p:last-child{margin-bottom:0}
 .panel-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(20px,2.2vw,34px)}
@@ -294,7 +294,7 @@ p.slide-vtitle{margin:0}
 }
 
 /* işaretli liste */
-.check-list{list-style:none;margin:0 0 clamp(18px,2vw,30px);padding:0;display:grid;gap:9px}
+.check-list{list-style:none;margin:0 0 clamp(18px,2vw,30px);padding:0;display:grid;gap:9px;max-width:46ch}
 .check-list li{
   position:relative;padding:9px 14px 9px 40px;border-radius:var(--r-sm);
   background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
@@ -308,11 +308,11 @@ p.slide-vtitle{margin:0}
 .check-list .is-highlight{
   background:var(--copper-soft);border-color:rgba(210,121,60,.36);color:var(--ink);font-weight:500;
 }
-.panel-close{margin:0;font-size:clamp(14px,1.02vw,16px);line-height:1.6;color:#ddd8d1}
+.panel-close{margin:0;max-width:62ch;font-size:clamp(14px,1.02vw,16px);line-height:1.6;color:#ddd8d1}
 
 /* alıntı */
 .pull-quote{
-  margin:0 0 clamp(18px,2vw,30px);padding:clamp(16px,1.6vw,24px);
+  margin:0 0 clamp(18px,2vw,30px);max-width:56ch;padding:clamp(16px,1.6vw,24px);
   border-radius:var(--r-sm);border:1px solid var(--edge);
   background:rgba(255,255,255,.035);
   font-family:var(--display);font-size:clamp(14.5px,1.1vw,18px);line-height:1.5;
@@ -321,7 +321,7 @@ p.slide-vtitle{margin:0}
 .pull-quote::before{content:"“";color:var(--copper);font-size:1.6em;line-height:0;vertical-align:-.28em;margin-right:.12em}
 
 /* marka çipleri */
-.ref-groups{display:grid;gap:clamp(14px,1.5vw,22px);margin:0}
+.ref-groups{display:grid;gap:clamp(14px,1.5vw,22px);margin:0;max-width:72ch}
 .ref-group h3{
   margin:0 0 9px;font-family:var(--text);
   font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--copper);
