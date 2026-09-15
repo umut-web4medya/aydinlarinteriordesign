@@ -17,7 +17,7 @@
       delete img.dataset.srcset;
     });
   }
-  var SPEED  = 700;                                   /* CSS'teki .7s ile aynı */
+  var SPEED  = 850;                                   /* CSS'teki .85s ile aynı */
   var DECK   = window.matchMedia('(min-width:981px)');
 
   /* küp derinliği = kutunun genişliği; yoksa dönüş yamuk görünür */
