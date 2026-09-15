@@ -16,9 +16,10 @@
 <link rel="alternate" hreflang="de" href="../../de/leistungen/">
 <link rel="alternate" hreflang="x-default" href="../../hizmetler/">
 <link rel="stylesheet" href="../../assets/site.css">
+<script>document.documentElement.classList.add("js-reveal")</script>
 </head>
 <body>
-<header class="site-head">
+<header class="site-head" id="head">
   <a class="brand" href="../../de/" aria-label="Aydınlar Interior Design — Startseite">
     <img class="brand-logo" src="../../images/aydinlar-logo-white.png" width="360" height="184"
          alt="Aydınlar Interior Design Logo" decoding="async">
@@ -27,7 +28,6 @@
       <span class="brand-sub">Interior Design</span>
     </span>
   </a>
-  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menü öffnen"><i></i></button>
   <ul class="nav" id="nav">
     <li><a href="../../de/">Startseite</a></li>
     <li class="is-current"><a href="../../de/leistungen/">Leistungen</a></li>
@@ -40,33 +40,34 @@
       <li><a href="../../en/services/" hreflang="en" lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><clipPath id="uj"><path d="M30 20V0h30v20h-30V40H30V20H0v-20h30z"/></clipPath><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0L60 40M60 0L0 40" stroke="#C8102E" stroke-width="4.8" clip-path="url(#uj)"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="13.3"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="8"/></svg></a></li>
       <li><a class="is-on" href="../../de/leistungen/" hreflang="de" lang="de" title="Deutsch" aria-label="Deutsch" aria-current="true"><svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="13.34" fill="#111"/><rect y="13.34" width="60" height="13.33" fill="#DD0000"/><rect y="26.67" width="60" height="13.33" fill="#FFCE00"/></svg></a></li>
   </ul>
-  <a class="head-cta" href="tel:+905320597461">0532 059 74 61</a>
+  <a class="btn head-cta" href="tel:+905320597461">0532 059 74 61</a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menü öffnen"><i></i></button>
 </header>
 
 <main class="page">
-  <div class="page-head">
+  <section class="page-hero">
     <div class="wrap">
-      <p class="kicker">Leistungen</p>
-      <h1>Architektonische Konzeptläden</h1>
-      <p class="lede">Eine Leistung aus einer Hand, die die Identität Ihrer Marke im Laden aufbaut – vom Entwurf über die Produktion bis zur Montage vor Ort.</p>
+      <p class="eyebrow reveal">Leistungen</p>
+      <h1 class="reveal">Architektonische Konzeptläden</h1>
+      <p class="lede reveal">Eine Leistung aus einer Hand, die die Identität Ihrer Marke im Laden aufbaut – vom Entwurf über die Produktion bis zur Montage vor Ort.</p>
     </div>
-  </div>
+  </section>
 
   <div class="wrap">
     <section class="section">
-      <h2 class="section-title">Was wir tun</h2>
-      <div class="svc-grid">
-        <article class="svc"><span class="svc-mark"></span>
+      <h2 class="section-title reveal">Was wir tun</h2>
+      <div class="cards">
+        <article class="card reveal"><span class="mark"></span>
           <h3>Architektonische Konzeptläden</h3><p>PLACEHOLDER — der Einstiegstext dazu, wie Sie das Ladenkonzept einer Marke aufbauen.</p></article>
-        <article class="svc"><span class="svc-mark"></span>
+        <article class="card reveal"><span class="mark"></span>
           <h3>Schlüsselfertige Projekte</h3><p>Wir bauen Ihr Wunschgeschäft für Gardinen und Teppiche – schlüsselfertig, von Anfang bis Ende.</p></article>
-        <article class="svc"><span class="svc-mark"></span>
+        <article class="card reveal"><span class="mark"></span>
           <h3>Design · Produktion · Montage</h3><p>PLACEHOLDER — der Text über Ihre eigene Produktion und Ihr Montageteam vor Ort.</p></article>
       </div>
     </section>
 
     <section class="section">
-      <div class="offer">
+      <div class="offer reveal">
         <h2>Ein Geschäft zu eröffnen ist jetzt einfach</h2>
         <p>Wir bauen Ihr Wunschgeschäft für Gardinen und Teppiche – schlüsselfertig, von Anfang bis Ende.</p>
         <ul class="check-list">
@@ -76,16 +77,16 @@
           <li class="is-highlight">30 % Anzahlung, 12 Monatsraten</li>
         </ul>
         <p class="panel-close">Sie träumen davon – unser Team kümmert sich um den Rest.</p>
-        <a class="panel-link" href="tel:+905320597461">Projektverantwortlicher · 0532 059 74 61</a>
+        <div class="panel-actions"><a class="btn btn-accent" href="tel:+905320597461">Projektverantwortlicher · 0532 059 74 61<svg class="arw" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h12M9.5 3.5L14 8l-4.5 4.5"/></svg></a></div>
       </div>
     </section>
 
     <section class="section">
-      <h2 class="section-title">Ablauf</h2>
+      <h2 class="section-title reveal">Ablauf</h2>
       <ol class="steps">
-        <li><h3>Entwurf</h3><p>PLACEHOLDER — ein kurzer Text zur Entwurfsphase.</p></li>
-        <li><h3>Produktion</h3><p>PLACEHOLDER — ein kurzer Text zur Produktionsphase.</p></li>
-        <li><h3>Montage</h3><p>PLACEHOLDER — ein kurzer Text zu Montage und Übergabe vor Ort.</p></li>
+        <li class="reveal"><h3>Entwurf</h3><p>PLACEHOLDER — ein kurzer Text zur Entwurfsphase.</p></li>
+        <li class="reveal"><h3>Produktion</h3><p>PLACEHOLDER — ein kurzer Text zur Produktionsphase.</p></li>
+        <li class="reveal"><h3>Montage</h3><p>PLACEHOLDER — ein kurzer Text zu Montage und Übergabe vor Ort.</p></li>
       </ol>
     </section>
   </div>
@@ -114,6 +115,6 @@
   </div>
 </footer>
 
-<script src="../../assets/nav.js"></script>
+<script src="../../assets/ui.js"></script>
 </body>
 </html>

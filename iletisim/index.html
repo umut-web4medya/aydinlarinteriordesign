@@ -16,9 +16,10 @@
 <link rel="alternate" hreflang="de" href="../de/kontakt/">
 <link rel="alternate" hreflang="x-default" href="../iletisim/">
 <link rel="stylesheet" href="../assets/site.css">
+<script>document.documentElement.classList.add("js-reveal")</script>
 </head>
 <body>
-<header class="site-head">
+<header class="site-head" id="head">
   <a class="brand" href="../" aria-label="Aydınlar Interior Design — ana sayfa">
     <img class="brand-logo" src="../images/aydinlar-logo-white.png" width="360" height="184"
          alt="Aydınlar Interior Design logosu" decoding="async">
@@ -27,7 +28,6 @@
       <span class="brand-sub">Interior Design</span>
     </span>
   </a>
-  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menüyü aç"><i></i></button>
   <ul class="nav" id="nav">
     <li><a href="../">Anasayfa</a></li>
     <li><a href="../hizmetler/">Hizmetler</a></li>
@@ -40,39 +40,40 @@
       <li><a href="../en/contact/" hreflang="en" lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><clipPath id="uj"><path d="M30 20V0h30v20h-30V40H30V20H0v-20h30z"/></clipPath><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0L60 40M60 0L0 40" stroke="#C8102E" stroke-width="4.8" clip-path="url(#uj)"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="13.3"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="8"/></svg></a></li>
       <li><a href="../de/kontakt/" hreflang="de" lang="de" title="Deutsch" aria-label="Deutsch"><svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="13.34" fill="#111"/><rect y="13.34" width="60" height="13.33" fill="#DD0000"/><rect y="26.67" width="60" height="13.33" fill="#FFCE00"/></svg></a></li>
   </ul>
-  <a class="head-cta" href="tel:+905320597461">0532 059 74 61</a>
+  <a class="btn head-cta" href="tel:+905320597461">0532 059 74 61</a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menüyü aç"><i></i></button>
 </header>
 
 <main class="page">
-  <div class="page-head">
+  <section class="page-hero">
     <div class="wrap">
-      <p class="kicker">İletişim</p>
-      <h1>Projenizi Konuşalım</h1>
-      <p class="lede">Mağaza konseptinizi konuşmak için proje yetkilimize doğrudan ulaşabilirsiniz.</p>
+      <p class="eyebrow reveal">İletişim</p>
+      <h1 class="reveal">Projenizi Konuşalım</h1>
+      <p class="lede reveal">Mağaza konseptinizi konuşmak için proje yetkilimize doğrudan ulaşabilirsiniz.</p>
     </div>
-  </div>
+  </section>
 
   <div class="wrap">
     <section class="section">
       <div class="contact">
-        <div class="contact-card">
+        <div class="contact-card reveal">
           <h3>Proje Yetkilisi</h3>
           <a href="tel:+905320597461">0532 059 74 61</a>
         </div>
-        <div class="contact-card">
+        <div class="contact-card reveal">
           <h3>Instagram</h3>
           <a href="https://www.instagram.com/aydinlar.interior.design/" target="_blank" rel="noopener">@aydinlar.interior.design</a>
         </div>
-        <div class="contact-card">
+        <div class="contact-card reveal">
           <h3>Firma</h3>
           <p>Aydınlar Premium Group İnşaat Ltd. Şti.</p>
         </div>
-        <div class="contact-card">
+        <div class="contact-card reveal">
           <h3>Çalışma Alanı</h3>
           <p>Tüm Türkiye</p>
         </div>
       </div>
-      <p class="note">PLACEHOLDER — adres, e-posta ve çalışma saatleri henüz yok. Bunları verdiğinde buraya eklenecek.</p>
+      <p class="note reveal">PLACEHOLDER — adres, e-posta ve çalışma saatleri henüz yok. Bunları verdiğinde buraya eklenecek.</p>
     </section>
   </div>
 </main>
@@ -100,6 +101,6 @@
   </div>
 </footer>
 
-<script src="../assets/nav.js"></script>
+<script src="../assets/ui.js"></script>
 </body>
 </html>

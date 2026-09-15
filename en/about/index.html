@@ -16,9 +16,10 @@
 <link rel="alternate" hreflang="de" href="../../de/ueber-uns/">
 <link rel="alternate" hreflang="x-default" href="../../hakkimizda/">
 <link rel="stylesheet" href="../../assets/site.css">
+<script>document.documentElement.classList.add("js-reveal")</script>
 </head>
 <body>
-<header class="site-head">
+<header class="site-head" id="head">
   <a class="brand" href="../../en/" aria-label="Aydınlar Interior Design — home">
     <img class="brand-logo" src="../../images/aydinlar-logo-white.png" width="360" height="184"
          alt="Aydınlar Interior Design logo" decoding="async">
@@ -27,7 +28,6 @@
       <span class="brand-sub">Interior Design</span>
     </span>
   </a>
-  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
   <ul class="nav" id="nav">
     <li><a href="../../en/">Home</a></li>
     <li><a href="../../en/services/">Services</a></li>
@@ -40,20 +40,21 @@
       <li><a class="is-on" href="../../en/about/" hreflang="en" lang="en" title="English" aria-label="English" aria-current="true"><svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><clipPath id="uj"><path d="M30 20V0h30v20h-30V40H30V20H0v-20h30z"/></clipPath><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0L60 40M60 0L0 40" stroke="#C8102E" stroke-width="4.8" clip-path="url(#uj)"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="13.3"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="8"/></svg></a></li>
       <li><a href="../../de/ueber-uns/" hreflang="de" lang="de" title="Deutsch" aria-label="Deutsch"><svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="13.34" fill="#111"/><rect y="13.34" width="60" height="13.33" fill="#DD0000"/><rect y="26.67" width="60" height="13.33" fill="#FFCE00"/></svg></a></li>
   </ul>
-  <a class="head-cta" href="tel:+905320597461">0532 059 74 61</a>
+  <a class="btn head-cta" href="tel:+905320597461">0532 059 74 61</a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><i></i></button>
 </header>
 
 <main class="page">
-  <div class="page-head">
+  <section class="page-hero">
     <div class="wrap">
-      <p class="kicker">About</p>
-      <h1>The Aydınlar Design Manifesto</h1>
+      <p class="eyebrow reveal">About</p>
+      <h1 class="reveal">The Aydınlar Design Manifesto</h1>
     </div>
-  </div>
+  </section>
 
   <div class="wrap">
     <section class="section">
-      <div class="panel-body manifesto about-manifesto">
+      <div class="panel-body manifesto reveal" style="max-width:56ch">
         <p>In every line, every texture and every detail;<br>
 an approach where aesthetics and function are balanced,<br>
 where a space is not merely designed<br>
@@ -66,16 +67,16 @@ felt beyond what is seen.</p>
     </section>
 
     <section class="section">
-      <h2 class="section-title">Company</h2>
-      <div class="svc-grid">
-        <article class="svc"><span class="svc-mark"></span>
+      <h2 class="section-title reveal">Company</h2>
+      <div class="cards">
+        <article class="card reveal"><span class="mark"></span>
           <h3>Aydınlar Premium Group İnşaat Ltd. Şti.</h3><p>Architectural concept stores across Türkiye · Turnkey projects · Design, production, installation</p></article>
-        <article class="svc"><span class="svc-mark"></span>
+        <article class="card reveal"><span class="mark"></span>
           <h3>21 Brands</h3>
           <p>Projects delivered from curtain and home-textile stores to food chains and offices.</p>
-          <a class="panel-link" href="../../en/projects/">All Projects</a></article>
+          <a class="btn btn-quiet" href="../../en/projects/">All Projects<svg class="arw" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h12M9.5 3.5L14 8l-4.5 4.5"/></svg></a></article>
       </div>
-      <p class="note">PLACEHOLDER — the text about founding year, team and workshop goes here.</p>
+      <p class="note reveal">PLACEHOLDER — the text about founding year, team and workshop goes here.</p>
     </section>
   </div>
 </main>
@@ -103,6 +104,6 @@ felt beyond what is seen.</p>
   </div>
 </footer>
 
-<script src="../../assets/nav.js"></script>
+<script src="../../assets/ui.js"></script>
 </body>
 </html>

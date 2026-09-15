@@ -3,16 +3,19 @@
   if(!hero) return;                                   /* iç sayfalarda deste yok */
   var slides = Array.prototype.slice.call(hero.querySelectorAll('.slide'));
   var panels = Array.prototype.slice.call(hero.querySelectorAll('.panel'));
-  var imgs   = slides.map(function(sl){ return sl.querySelector('.slide-bg'); });
+  var imgs   = slides.map(function(sl){ return sl.querySelectorAll('img[data-src]'); });
   var index  = 0, locked = false;
 
   /* görseller: ilk kare HTML'de yüklenir, kalanlar gerektiğinde */
-  function gorseliYukle(img){
-    if(!img || !img.dataset.src) return;
-    if(img.dataset.srcset) img.srcset = img.dataset.srcset;
-    img.src = img.dataset.src;
-    delete img.dataset.src;
-    delete img.dataset.srcset;
+  function gorseliYukle(liste){
+    if(!liste) return;
+    Array.prototype.forEach.call(liste, function(img){
+      if(!img.dataset.src) return;
+      if(img.dataset.srcset) img.srcset = img.dataset.srcset;
+      img.src = img.dataset.src;
+      delete img.dataset.src;
+      delete img.dataset.srcset;
+    });
   }
   var SPEED  = 700;                                   /* CSS'teki .7s ile aynı */
   var DECK   = window.matchMedia('(min-width:981px)');

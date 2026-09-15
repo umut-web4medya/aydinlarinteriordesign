@@ -16,9 +16,10 @@
 <link rel="alternate" hreflang="de" href="../../de/ueber-uns/">
 <link rel="alternate" hreflang="x-default" href="../../hakkimizda/">
 <link rel="stylesheet" href="../../assets/site.css">
+<script>document.documentElement.classList.add("js-reveal")</script>
 </head>
 <body>
-<header class="site-head">
+<header class="site-head" id="head">
   <a class="brand" href="../../de/" aria-label="Aydınlar Interior Design — Startseite">
     <img class="brand-logo" src="../../images/aydinlar-logo-white.png" width="360" height="184"
          alt="Aydınlar Interior Design Logo" decoding="async">
@@ -27,7 +28,6 @@
       <span class="brand-sub">Interior Design</span>
     </span>
   </a>
-  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menü öffnen"><i></i></button>
   <ul class="nav" id="nav">
     <li><a href="../../de/">Startseite</a></li>
     <li><a href="../../de/leistungen/">Leistungen</a></li>
@@ -40,20 +40,21 @@
       <li><a href="../../en/about/" hreflang="en" lang="en" title="English" aria-label="English"><svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><clipPath id="uj"><path d="M30 20V0h30v20h-30V40H30V20H0v-20h30z"/></clipPath><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" stroke-width="8"/><path d="M0 0L60 40M60 0L0 40" stroke="#C8102E" stroke-width="4.8" clip-path="url(#uj)"/><path d="M30 0v40M0 20h60" stroke="#fff" stroke-width="13.3"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="8"/></svg></a></li>
       <li><a class="is-on" href="../../de/ueber-uns/" hreflang="de" lang="de" title="Deutsch" aria-label="Deutsch" aria-current="true"><svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><rect width="60" height="13.34" fill="#111"/><rect y="13.34" width="60" height="13.33" fill="#DD0000"/><rect y="26.67" width="60" height="13.33" fill="#FFCE00"/></svg></a></li>
   </ul>
-  <a class="head-cta" href="tel:+905320597461">0532 059 74 61</a>
+  <a class="btn head-cta" href="tel:+905320597461">0532 059 74 61</a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menü öffnen"><i></i></button>
 </header>
 
 <main class="page">
-  <div class="page-head">
+  <section class="page-hero">
     <div class="wrap">
-      <p class="kicker">Über uns</p>
-      <h1>Das Aydınlar Design-Manifest</h1>
+      <p class="eyebrow reveal">Über uns</p>
+      <h1 class="reveal">Das Aydınlar Design-Manifest</h1>
     </div>
-  </div>
+  </section>
 
   <div class="wrap">
     <section class="section">
-      <div class="panel-body manifesto about-manifesto">
+      <div class="panel-body manifesto reveal" style="max-width:56ch">
         <p>In jeder Linie, jeder Textur und jedem Detail;<br>
 ein Ansatz, in dem Ästhetik und Funktion im Gleichgewicht stehen,<br>
 in dem ein Raum nicht nur gestaltet wird,<br>
@@ -66,16 +67,16 @@ spürbar über das Sichtbare hinaus.</p>
     </section>
 
     <section class="section">
-      <h2 class="section-title">Unternehmen</h2>
-      <div class="svc-grid">
-        <article class="svc"><span class="svc-mark"></span>
+      <h2 class="section-title reveal">Unternehmen</h2>
+      <div class="cards">
+        <article class="card reveal"><span class="mark"></span>
           <h3>Aydınlar Premium Group İnşaat Ltd. Şti.</h3><p>Architektonische Konzeptläden türkeiweit · Schlüsselfertige Projekte · Entwurf, Produktion, Montage</p></article>
-        <article class="svc"><span class="svc-mark"></span>
+        <article class="card reveal"><span class="mark"></span>
           <h3>21 Marken</h3>
           <p>Umgesetzte Projekte – von Gardinen- und Heimtextilgeschäften bis zu Gastronomieketten und Büros.</p>
-          <a class="panel-link" href="../../de/projekte/">Alle Projekte</a></article>
+          <a class="btn btn-quiet" href="../../de/projekte/">Alle Projekte<svg class="arw" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8h12M9.5 3.5L14 8l-4.5 4.5"/></svg></a></article>
       </div>
-      <p class="note">PLACEHOLDER — der Text zu Gründungsjahr, Team und Werkstatt kommt hierher.</p>
+      <p class="note reveal">PLACEHOLDER — der Text zu Gründungsjahr, Team und Werkstatt kommt hierher.</p>
     </section>
   </div>
 </main>
@@ -103,6 +104,6 @@ spürbar über das Sichtbare hinaus.</p>
   </div>
 </footer>
 
-<script src="../../assets/nav.js"></script>
+<script src="../../assets/ui.js"></script>
 </body>
 </html>
