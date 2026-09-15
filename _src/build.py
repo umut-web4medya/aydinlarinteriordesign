@@ -21,6 +21,7 @@ TEL_HREF = "+905320597461"
 TEL_YAZI = "0532 059 74 61"
 IG = "https://www.instagram.com/aydinlar.interior.design/"
 YIL = "2026"
+KOK_URL = "https://umut-web4medya.github.io/aydinlarinteriordesign/"
 DILLER = ["tr", "en", "de"]
 ANAHTARLAR = ["home", "services", "projects", "about", "contact"]
 
@@ -51,9 +52,16 @@ def bag(su_an, lang, key):
 def head(lang, key, baslik, aciklama):
     yol = dosya(lang, key)
     up = "../" * derinlik(yol)
+    kendi = KOK_URL + url(lang, key)
+    gorsel = KOK_URL + "images/slide-2.webp"
+    yerel = {"tr": "tr_TR", "en": "en_GB", "de": "de_DE"}[lang]
     alt = "\n".join(
-        f'<link rel="alternate" hreflang="{d}" href="{bag((lang, key), d, key)}">'
+        f'<link rel="alternate" hreflang="{d}" href="{KOK_URL + url(d, key)}">'
         for d in DILLER
+    )
+    ogalt = "\n".join(
+        f'<meta property="og:locale:alternate" content="{ {"tr":"tr_TR","en":"en_GB","de":"de_DE"}[d] }">'
+        for d in DILLER if d != lang
     )
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
@@ -62,18 +70,67 @@ def head(lang, key, baslik, aciklama):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{baslik}</title>
 <meta name="description" content="{aciklama}">
+<link rel="canonical" href="{kendi}">
+{alt}
+<link rel="alternate" hreflang="x-default" href="{KOK_URL + url('tr', key)}">
 <link rel="icon" href="{up}images/favicon.ico" sizes="48x48">
 <link rel="icon" href="{up}images/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="{up}images/favicon-192.png">
-<meta property="og:title" content="{baslik}">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="{ {'tr': 'tr_TR', 'en': 'en_GB', 'de': 'de_DE'}[lang] }">
-{alt}
-<link rel="alternate" hreflang="x-default" href="{bag((lang, key), 'tr', key)}">
+<meta property="og:site_name" content="{SITE}">
+<meta property="og:title" content="{baslik}">
+<meta property="og:description" content="{aciklama}">
+<meta property="og:url" content="{kendi}">
+<meta property="og:image" content="{gorsel}">
+<meta property="og:image:width" content="1220">
+<meta property="og:image:height" content="1207">
+<meta property="og:image:alt" content="{t('alt2', lang)}">
+<meta property="og:locale" content="{yerel}">
+{ogalt}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{baslik}">
+<meta name="twitter:description" content="{aciklama}">
+<meta name="twitter:image" content="{gorsel}">
+<meta name="theme-color" content="#f8f8f6">
+<link rel="preload" as="font" type="font/woff2" href="{up}assets/fonts/serif-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="{up}assets/fonts/instrument-latin.woff2" crossorigin>
 <link rel="stylesheet" href="{up}assets/site.css">
 <script>document.documentElement.classList.add("js-reveal")</script>
+<script type="application/ld+json">{sema(lang, key, baslik, aciklama, kendi, gorsel)}</script>
 </head>
 <body>"""
+
+
+def sema(lang, key, baslik, aciklama, kendi, gorsel):
+    """JSON-LD. Yalnız DOĞRULANMIŞ bilgiler: uydurma adres veya puan yok."""
+    import json
+    isletme = {
+        "@type": "HomeAndConstructionBusiness",
+        "@id": KOK_URL + "#isletme",
+        "name": SITE,
+        "legalName": FIRMA,
+        "url": KOK_URL,
+        "image": gorsel,
+        "logo": KOK_URL + "images/favicon-192.png",
+        "telephone": "+90 532 059 74 61",
+        "description": t("desc_home", lang),
+        "areaServed": {"@type": "Country", "name": "Türkiye"},
+        "sameAs": [IG],
+        "knowsAbout": [t("p2_title", lang), t("svc_turnkey", lang), t("p4_title", lang)],
+        "makesOffer": {
+            "@type": "Offer",
+            "itemOffered": {"@type": "Service", "name": t("svc_turnkey", lang),
+                            "description": t("p3_lead", lang)},
+        },
+    }
+    graf = [isletme,
+            {"@type": "WebSite", "@id": KOK_URL + "#site", "url": KOK_URL, "name": SITE,
+             "inLanguage": lang, "publisher": {"@id": KOK_URL + "#isletme"}},
+            {"@type": "WebPage", "@id": kendi + "#sayfa", "url": kendi, "name": baslik,
+             "description": aciklama, "inLanguage": lang,
+             "isPartOf": {"@id": KOK_URL + "#site"}, "about": {"@id": KOK_URL + "#isletme"}}]
+    return json.dumps({"@context": "https://schema.org", "@graph": graf},
+                      ensure_ascii=False, separators=(",", ":"))
 
 
 def dil_secici(lang, key):
@@ -128,15 +185,15 @@ def footer(lang, key):
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <h4>{SITE}</h4>
+        <h2>{SITE}</h2>
         <p>{FIRMA}<br>{t('firma_alt', lang)}</p>
       </div>
       <div>
-        <h4>{t('pages', lang)}</h4>
+        <h2>{t('pages', lang)}</h2>
         <ul>{links}</ul>
       </div>
       <div>
-        <h4>{t('nav_contact', lang)}</h4>
+        <h2>{t('nav_contact', lang)}</h2>
         <ul>
           <li><a href="tel:{TEL_HREF}">{t('project_mgr', lang)} · {TEL_YAZI}</a></li>
           <li><a href="{IG}" target="_blank" rel="noopener">Instagram</a></li>
@@ -156,12 +213,10 @@ def sayfa_basi(kicker, h1, lede=""):
             f'    </div>\n  </section>\n')
 
 
-def kapat(lang, key, deste=False):
+def kapat(lang, key):
     up = "../" * derinlik(dosya(lang, key))
-    js = f'\n<script src="{up}assets/ui.js"></script>\n'
-    if deste:
-        js += f'<script src="{up}assets/deck.js"></script>\n'
-    return js + "</body>\n</html>\n"
+    return ('\n<script src="' + up + 'assets/ui.js" defer></script>\n'
+            '</body>\n</html>\n')
 
 
 def kontrol_listesi(lang):
@@ -178,100 +233,146 @@ def ref_bloklari(lang, sinif="ref-groups"):
     out = []
     for basliklar, isimler in REFERANSLAR:
         li = "".join(f"<li>{n}</li>" for n in isimler)
-        out.append(f'          <div class="ref-group reveal">\n            <h4>{basliklar[i]}</h4>\n'
+        out.append(f'          <div class="ref-group reveal">\n            <h3>{basliklar[i]}</h3>\n'
                    f'            <ul class="chips">{li}</ul>\n          </div>')
     return f'        <div class="{sinif}">\n' + "\n".join(out) + "\n        </div>"
 
 
 # ------------------------------------------------------------------ anasayfa
+def vitrin(lang, up):
+    """Alan derinlikli görsel vitrin: üzerine gelinen keskin, kardeşleri bulanık."""
+    olculer = "(max-width:900px) 50vw, 26vw"
+    parcalar = []
+    for i in range(1, 6):
+        buyuk, kucuk = f"{up}images/slide-{i}.webp", f"{up}images/slide-{i}-sm.webp"
+        gecikme = "" if i == 1 else ' loading="lazy"'
+        oncelik = ' fetchpriority="high"' if i == 1 else ""
+        parcalar.append(
+            f'        <figure class="shot">\n'
+            f'          <img src="{buyuk}" srcset="{kucuk} 760w, {buyuk} 1220w" sizes="{olculer}"\n'
+            f'               width="1220" height="1229" alt="{t(f"alt{i}", lang)}"'
+            f'{gecikme}{oncelik} decoding="async">\n'
+            f'          <figcaption>{t(f"v{i}", lang)}</figcaption>\n'
+            f'        </figure>')
+    return "\n".join(parcalar)
+
+
 def deste(lang):
+    """Anasayfa: tek sayfa akışı. H1 manifesto, her bölüm H2, kartlar H3."""
     key = "home"
     up = "../" * derinlik(dosya(lang, key))
-    dikey = [t(f"v{i}", lang) for i in range(1, 6)]
-    olculer = "(max-width:980px) 100vw, 56vw"
+    tel = f"tel:{TEL_HREF}"
 
-    slaytlar = []
-    for i in range(1, 6):
-        aktif = " is-active" if i == 1 else ""
-        gizli = "" if i == 1 else ' aria-hidden="true"'
-        buyuk, kucuk = f"{up}images/slide-{i}.webp", f"{up}images/slide-{i}-sm.webp"
-        setler = f"{kucuk} 760w, {buyuk} 1220w"
-        olcu = f'sizes="{olculer}" width="1220" height="1229" decoding="async"'
-        if i == 1:   # ilk kare hemen, kalanı deck.js yükler
-            ana = (f'<img class="slide-bg" src="{buyuk}" srcset="{setler}" {olcu} '
-                   f'alt="{t("alt1", lang)}" fetchpriority="high">')
-            ysm = f'<img src="{buyuk}" srcset="{setler}" {olcu} alt="" aria-hidden="true">'
-        else:
-            ana = (f'<img class="slide-bg" data-src="{buyuk}" data-srcset="{setler}" {olcu} '
-                   f'alt="{t(f"alt{i}", lang)}" loading="lazy">')
-            ysm = (f'<img data-src="{buyuk}" data-srcset="{setler}" {olcu} alt="" '
-                   f'aria-hidden="true" loading="lazy">')
-        slaytlar.append(f"""  <article class="slide{aktif}" style="--i:{i}" aria-label="{i} / 5"{gizli}>
-    <div class="bloom" aria-hidden="true">{ysm}</div>
-    <div class="slide-media">{ana}</div>
-    <div class="counter"><b>{i}</b><i>5</i></div>
-    <h2 class="slide-vtitle"><span>{dikey[i-1]}</span></h2>
-  </article>""")
-
-    def kutu(i, kicker, baslik, govde, eylemler="", ekstra=""):
-        akt = " is-active" if i == 1 else ""
-        ey = f'\n        <div class="panel-actions">{eylemler}</div>' if eylemler else ""
-        return f"""  <div class="panel{akt}" style="--i:{i}">
-    <div class="frame"><div class="frame-inner">
-      <div class="panel-scroll">
-        <p class="panel-kicker">{kicker}</p>
-        <h3 class="panel-title">{baslik}</h3>
-{govde}{ekstra}{ey}
-      </div>
-      <div class="scroll-hint"><b></b></div>
-    </div></div>
-  </div>"""
-
-    kutular = [
-        kutu(1, t("p1_kicker", lang), t("p1_title", lang),
-             f"""        <div class="panel-body manifesto">
+    return f"""  <section class="hero sec" id="manifesto" aria-labelledby="b-manifesto">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow reveal">{t('p1_kicker', lang)}</p>
+        <h1 class="reveal" id="b-manifesto">{t('p1_title', lang)}</h1>
+        <div class="manifesto reveal">
           <p>{t('manifesto', lang)}</p>
           <p>{t('manifesto2', lang)}</p>
           <p class="sig">{SITE}</p>
-        </div>"""),
-        kutu(2, t("p2_kicker", lang), t("p2_title", lang),
-             f'        <div class="panel-body"><p>{t("p2_body", lang)}</p></div>',
-             btn(t("our_services", lang), bag((lang, key), lang, "services"))),
-        kutu(3, t("p3_kicker", lang), t("p3_title", lang),
-             f'        <div class="panel-body"><p>{t("p3_lead", lang)}</p></div>',
-             btn(f'{t("project_mgr", lang)} · {TEL_YAZI}', f"tel:{TEL_HREF}", "btn-accent"),
-             "\n" + kontrol_listesi(lang)
-             + f'\n        <p class="panel-close">{t("p3_close", lang)}</p>'),
-        kutu(4, t("p4_kicker", lang), t("p4_title", lang),
-             f'        <div class="panel-body"><p>{t("p4_body", lang)}</p></div>',
-             btn(t("p4_link", lang), bag((lang, key), lang, "services"))),
-        kutu(5, t("p5_kicker", lang), t("p5_title", lang),
-             f'        <blockquote class="pull-quote">{t("quote", lang)}</blockquote>',
-             btn(t("all_projects", lang), bag((lang, key), lang, "projects")),
-             "\n" + ref_bloklari(lang)),
-    ]
+        </div>
+        <div class="hero-actions reveal">
+          {btn(t('our_services', lang), '#konsept')}
+          {btn(f"{t('project_mgr', lang)} · {TEL_YAZI}", tel, 'btn-accent')}
+        </div>
+      </div>
+      <div class="showcase reveal" role="group" aria-label="{t('carousel', lang)}">
+{vitrin(lang, up)}
+      </div>
+    </div>
+  </section>
 
-    return f"""<section class="hero" id="hero" aria-roledescription="carousel" aria-label="{t('carousel', lang)}">
+  <section class="section sec" id="konsept" aria-labelledby="b-konsept">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow reveal">{t('p2_kicker', lang)}</p>
+        <h2 class="section-title reveal" id="b-konsept">{t('p2_title', lang)}</h2>
+        <p class="section-lede reveal">{t('p2_body', lang)}</p>
+      </div>
+      <div class="cards">
+        <article class="card reveal"><span class="mark"></span>
+          <h3>{t('p2_title', lang)}</h3><p>{t('p2_body', lang)}</p></article>
+        <article class="card reveal"><span class="mark"></span>
+          <h3>{t('svc_turnkey', lang)}</h3><p>{t('p3_lead', lang)}</p></article>
+        <article class="card reveal"><span class="mark"></span>
+          <h3>{t('p4_title', lang)}</h3><p>{t('p4_body', lang)}</p>
+          {btn(t('our_services', lang), bag((lang, key), lang, 'services'), 'btn-quiet')}</article>
+      </div>
+    </div>
+  </section>
 
-{chr(10).join(slaytlar)}
+  <section class="section sec" id="anahtar-teslim" aria-labelledby="b-teklif">
+    <div class="wrap">
+      <div class="offer reveal">
+        <p class="eyebrow eyebrow-on-dark">{t('p3_kicker', lang)}</p>
+        <h2 id="b-teklif">{t('p3_title', lang)}</h2>
+        <p>{t('p3_lead', lang)}</p>
+{kontrol_listesi(lang)}
+        <p class="panel-close">{t('p3_close', lang)}</p>
+        <div class="hero-actions">{btn(f"{t('project_mgr', lang)} · {TEL_YAZI}", tel)}</div>
+      </div>
+    </div>
+  </section>
 
-{chr(10).join(kutular)}
+  <section class="section sec" id="surec" aria-labelledby="b-surec">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow reveal">{t('p4_kicker', lang)}</p>
+        <h2 class="section-title reveal" id="b-surec">{t('p4_title', lang)}</h2>
+      </div>
+      <ol class="steps">
+        <li class="reveal"><h3>{t('step1', lang)}</h3><p>{t('step1_b', lang)}</p></li>
+        <li class="reveal"><h3>{t('step2', lang)}</h3><p>{t('step2_b', lang)}</p></li>
+        <li class="reveal"><h3>{t('step3', lang)}</h3><p>{t('step3_b', lang)}</p></li>
+      </ol>
+    </div>
+  </section>
 
-  <nav class="hero-nav" aria-label="{t('slide_nav', lang)}">
-    <button type="button" data-dir="-1" aria-label="{t('prev', lang)}">{DESTE_SOL}</button>
-    <button type="button" data-dir="1" aria-label="{t('next', lang)}">{DESTE_SAG}</button>
-    <span class="ayrac" aria-hidden="true"></span>
-    <a class="sosyal" href="{IG}" target="_blank" rel="noopener" aria-label="Instagram">{INSTAGRAM}</a>
-  </nav>
+  <section class="section sec" id="referanslar" aria-labelledby="b-referans">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow reveal">{t('p5_kicker', lang)}</p>
+        <h2 class="section-title reveal" id="b-referans">{t('p5_title', lang)}</h2>
+      </div>
+      <blockquote class="pull-quote reveal">{t('quote', lang)}</blockquote>
+      <div class="bosluk"></div>
+{ref_bloklari(lang)}
+      <div class="hero-actions">{btn(t('all_projects', lang), bag((lang, key), lang, 'projects'))}</div>
+    </div>
+  </section>
 
-  <p class="hero-foot">© {FIRMA} {YIL}</p>
-</section>"""
+  <section class="section sec" id="iletisim" aria-labelledby="b-iletisim">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow reveal">{t('nav_contact', lang)}</p>
+        <h2 class="section-title reveal" id="b-iletisim">{t('ctc_h1', lang)}</h2>
+        <p class="section-lede reveal">{t('ctc_lede', lang)}</p>
+      </div>
+      <div class="contact">
+        <div class="contact-card reveal">
+          <p class="ck-label">{t('project_mgr', lang)}</p><a href="{tel}">{TEL_YAZI}</a>
+        </div>
+        <div class="contact-card reveal">
+          <p class="ck-label">Instagram</p>
+          <a href="{IG}" target="_blank" rel="noopener">@aydinlar.interior.design</a>
+        </div>
+        <div class="contact-card reveal">
+          <p class="ck-label">{t('abt_company', lang)}</p><p>{FIRMA}</p>
+        </div>
+        <div class="contact-card reveal">
+          <p class="ck-label">{t('ctc_area', lang)}</p><p>{t('ctc_area_v', lang)}</p>
+        </div>
+      </div>
+    </div>
+  </section>"""
 
 
 def sayfa_home(lang):
     return (head(lang, "home", f"{SITE} — {t('p2_title', lang)}", t("desc_home", lang))
-            + header(lang, "home") + "\n<main>\n" + deste(lang) + "\n</main>\n"
-            + kapat(lang, "home", deste=True))
+            + header(lang, "home") + '\n<main class="page snap">\n' + deste(lang) + "\n</main>\n"
+            + footer(lang, "home") + kapat(lang, "home"))
 
 
 # ------------------------------------------------------------------ hizmetler
@@ -327,7 +428,7 @@ def sayfa_projects(lang):
         <div class="proj-shot reveal" data-label="{t('proj_shot', lang)}"></div>
         <div class="reveal">
           <p class="meta">Antalya</p>
-          <h3>Poyraz Home</h3>
+          <h2>Poyraz Home</h2>
           <p>{t('antalya_1', lang)}</p>
           <p>{t('antalya_2', lang)}</p>
         </div>
@@ -385,19 +486,19 @@ def sayfa_contact(lang):
     <section class="section">
       <div class="contact">
         <div class="contact-card reveal">
-          <h3>{t('project_mgr', lang)}</h3>
+          <p class="ck-label">{t('project_mgr', lang)}</p>
           <a href="tel:{TEL_HREF}">{TEL_YAZI}</a>
         </div>
         <div class="contact-card reveal">
-          <h3>Instagram</h3>
+          <p class="ck-label">Instagram</p>
           <a href="{IG}" target="_blank" rel="noopener">@aydinlar.interior.design</a>
         </div>
         <div class="contact-card reveal">
-          <h3>{t('abt_company', lang)}</h3>
+          <p class="ck-label">{t('abt_company', lang)}</p>
           <p>{FIRMA}</p>
         </div>
         <div class="contact-card reveal">
-          <h3>{t('ctc_area', lang)}</h3>
+          <p class="ck-label">{t('ctc_area', lang)}</p>
           <p>{t('ctc_area_v', lang)}</p>
         </div>
       </div>
@@ -424,6 +525,8 @@ def main():
             yol.write_text(html, encoding="utf-8")
             print(f"  {dosya(lang, key):28s} {len(html):>7,} bayt")
             n += 1
+    import seo_uret
+    seo_uret.uret()
     print(f"Derlendi — {n} sayfa.")
 
 

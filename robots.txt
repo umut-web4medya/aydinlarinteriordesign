@@ -1,0 +1,5 @@
+# Aydınlar Interior Design
+User-agent: *
+Allow: /
+
+Sitemap: https://umut-web4medya.github.io/aydinlarinteriordesign/sitemap.xml
