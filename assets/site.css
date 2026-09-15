@@ -703,6 +703,12 @@ p.slide-vtitle{margin:0}
   .medya-gozcu .slide-media:not(.is-in){clip-path:inset(12% 9% 12% 9% round 20px)}
   .medya-gozcu .slide-media .slide-bg{transition:scale 1.8s cubic-bezier(.16,.6,.2,1)}
   .medya-gozcu .slide-media:not(.is-in) .slide-bg{scale:1.22}
+  /* ilk kare (manifesto) ilk ekranda: JS'yi beklemeden, ilk boyamadan itibaren
+     CSS ile açılır — önce tam görünüp sonra kırpılma titremesi olmaz */
+  .slide:first-of-type .slide-media{animation:medya-ac 1.3s var(--ease-kup) .2s both}
+  .slide:first-of-type .slide-bg{animation:medya-otur 1.9s cubic-bezier(.16,.6,.2,1) .2s both}
+  @keyframes medya-ac{from{clip-path:inset(12% 9% 12% 9% round 20px)}to{clip-path:inset(0 0 0 0 round 20px)}}
+  @keyframes medya-otur{from{scale:1.22}to{scale:1}}
 }
 @media (max-width:560px){
   .page-hero h1{font-size:clamp(30px,9vw,44px)}
@@ -715,5 +721,6 @@ p.slide-vtitle{margin:0}
   .slide-bg{scale:1!important;translate:none!important}
   .slide.is-leaving{visibility:hidden}
   .slide.is-leaving .slide-media,.hero.is-turning .panel,
-  .panel.is-entering .frame::before,.panel.is-entering .panel-scroll > *{animation:none!important}
+  .panel.is-entering .frame::before,.panel.is-entering .panel-scroll > *,
+  .slide:first-of-type .slide-media,.slide:first-of-type .slide-bg{animation:none!important}
 }

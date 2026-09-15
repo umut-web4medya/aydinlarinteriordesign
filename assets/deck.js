@@ -160,7 +160,7 @@
   if(DECK.addEventListener) DECK.addEventListener('change', sizeCube);
 
   /* mobil: deste yok; kareler ekrana girerken perde gibi açılır.
-     İlk ekranda görünenler hemen açık sayılır — yüklenişte kırpılıp titremesin. */
+     İlk kare CSS animasyonuyla açılır (site.css), burada yalnız açık işaretlenir. */
   if(!DECK.matches && 'IntersectionObserver' in window &&
      !window.matchMedia('(prefers-reduced-motion:reduce)').matches){
     var gozcu = new IntersectionObserver(function(kayitlar){
@@ -169,7 +169,7 @@
       });
     }, {rootMargin:'0px 0px -8% 0px', threshold:0.05});
     hero.querySelectorAll('.slide-media').forEach(function(el){
-      if(el.getBoundingClientRect().top < window.innerHeight) el.classList.add('is-in');
+      if(el.closest('.slide') === slides[0]) el.classList.add('is-in');
       else gozcu.observe(el);
     });
     hero.classList.add('medya-gozcu');
