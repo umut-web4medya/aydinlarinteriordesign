@@ -72,3 +72,13 @@ Kaynak gönderiler (video):
 ## Hâlâ bekleyen metinler
 - 2. slayt gövdesi (Mimari Konsept Mağaza)
 - 4. slayt gövdesi (Tasarım · Üretim · Uygulama)
+
+## ⚠️ İngilizce ve Almanca çeviriler — ONAY BEKLİYOR
+Site 2026-09-15'te üç dilli hale getirildi (`/`, `/en/`, `/de/`). Tüm EN ve DE
+metinleri Türkçe asıldan çevrildi ve `_src/diller.py` içinde durur.
+Türkçe metinler müşterinin kendi sözleridir; İngilizce ve Almanca sürümler
+çeviridir ve müşteri onayından geçmemiştir. Özellikle şu ikisi gözden geçirilmeli:
+
+- **Manifesto** — şiirsel bir metin, çeviride ton kayması olabilir.
+- **"%30 peşin, 12 ay taksit"** — ticari taahhüt; yurt dışı müşteriye aynı
+  koşulun geçerli olup olmadığı teyit edilmeli.

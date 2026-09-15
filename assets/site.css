@@ -421,3 +421,24 @@ button{font:inherit}
   border-top:1px solid rgba(255,255,255,.1);
   font-size:10.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
 }
+
+/* ===========================================================
+   DİL SEÇİCİ — bayraklar gömülü SVG, dış istek yok
+   =========================================================== */
+.lang{display:flex;align-items:center;gap:7px;list-style:none;margin:0;padding:0;flex:0 0 auto}
+.lang a{
+  display:block;width:26px;height:17.3px;
+  outline:1px solid rgba(255,255,255,.3);
+  opacity:.45;transition:opacity .25s var(--ease),outline-color .25s var(--ease);
+}
+.lang a:hover{opacity:.9}
+.lang a.is-on{opacity:1;outline-color:var(--accent)}
+.flag{display:block;width:100%;height:100%}
+
+/* hakkımızda sayfasındaki manifesto biraz daha büyük */
+.about-manifesto{font-size:clamp(16px,1.35vw,21px);max-width:60ch}
+
+@media (max-width:980px){
+  .lang{order:1;margin-left:auto}
+  .nav-toggle{order:2;margin-left:8px}
+}
