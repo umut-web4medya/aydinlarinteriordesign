@@ -220,10 +220,11 @@ def kapat(lang, key, deste=False):
     # sağ alt hızlı iletişim: her sayfada, üst barın altında kalır (z-index)
     fab = (f'\n<div class="fab" role="group" aria-label="{t("fab_group", lang)}">\n'
            f'  <a class="fab-btn fab-wa" href="https://wa.me/{TEL_HREF.lstrip("+")}" target="_blank" '
-           f'rel="noopener" aria-label="WhatsApp: {TEL_YAZI}">{WHATSAPP}'
-           f'<span class="fab-tip" aria-hidden="true">WhatsApp</span></a>\n'
+           f'rel="noopener" aria-label="WhatsApp: {TEL_YAZI}"><span class="fab-ico">{WHATSAPP}</span>'
+           f'<span class="fab-lbl" aria-hidden="true">WhatsApp</span></a>\n'
+           f'  <span class="fab-ayrac" aria-hidden="true"></span>\n'
            f'  <a class="fab-btn fab-tel" href="tel:{TEL_HREF}" aria-label="{t("fab_call", lang)}: {TEL_YAZI}">'
-           f'{TELEFON}<span class="fab-tip" aria-hidden="true">{TEL_YAZI}</span></a>\n</div>')
+           f'<span class="fab-ico">{TELEFON}</span><span class="fab-lbl" aria-hidden="true">{TEL_YAZI}</span></a>\n</div>')
     js = fab + f'\n<script src="{up}assets/ui.js"></script>\n'
     if deste:
         js += f'<script src="{up}assets/deck.js"></script>\n'
