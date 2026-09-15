@@ -92,7 +92,7 @@ def head(lang, key, baslik, aciklama):
 <meta name="twitter:description" content="{aciklama}">
 <meta name="twitter:image" content="{gorsel}">
 <meta name="theme-color" content="#f8f8f6">
-<link rel="preload" as="font" type="font/woff2" href="{up}assets/fonts/serif-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="{up}assets/fonts/bricolage-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="{up}assets/fonts/instrument-latin.woff2" crossorigin>
 <link rel="stylesheet" href="{up}assets/site.css">
 <script>document.documentElement.classList.add("js-reveal")</script>
@@ -213,10 +213,12 @@ def sayfa_basi(kicker, h1, lede=""):
             f'    </div>\n  </section>\n')
 
 
-def kapat(lang, key):
+def kapat(lang, key, deste=False):
     up = "../" * derinlik(dosya(lang, key))
-    return ('\n<script src="' + up + 'assets/ui.js" defer></script>\n'
-            '</body>\n</html>\n')
+    js = f'\n<script src="{up}assets/ui.js"></script>\n'
+    if deste:
+        js += f'<script src="{up}assets/deck.js"></script>\n'
+    return js + "</body>\n</html>\n"
 
 
 def kontrol_listesi(lang):
@@ -239,140 +241,95 @@ def ref_bloklari(lang, sinif="ref-groups"):
 
 
 # ------------------------------------------------------------------ anasayfa
-def vitrin(lang, up):
-    """Alan derinlikli görsel vitrin: üzerine gelinen keskin, kardeşleri bulanık."""
-    olculer = "(max-width:900px) 50vw, 26vw"
-    parcalar = []
-    for i in range(1, 6):
-        buyuk, kucuk = f"{up}images/slide-{i}.webp", f"{up}images/slide-{i}-sm.webp"
-        gecikme = "" if i == 1 else ' loading="lazy"'
-        oncelik = ' fetchpriority="high"' if i == 1 else ""
-        parcalar.append(
-            f'        <figure class="shot">\n'
-            f'          <img src="{buyuk}" srcset="{kucuk} 760w, {buyuk} 1220w" sizes="{olculer}"\n'
-            f'               width="1220" height="1229" alt="{t(f"alt{i}", lang)}"'
-            f'{gecikme}{oncelik} decoding="async">\n'
-            f'          <figcaption>{t(f"v{i}", lang)}</figcaption>\n'
-            f'        </figure>')
-    return "\n".join(parcalar)
-
-
 def deste(lang):
-    """Anasayfa: tek sayfa akışı. H1 manifesto, her bölüm H2, kartlar H3."""
     key = "home"
     up = "../" * derinlik(dosya(lang, key))
-    tel = f"tel:{TEL_HREF}"
+    dikey = [t(f"v{i}", lang) for i in range(1, 6)]
+    olculer = "(max-width:980px) 100vw, 56vw"
 
-    return f"""  <section class="hero sec" id="manifesto" aria-labelledby="b-manifesto">
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow reveal">{t('p1_kicker', lang)}</p>
-        <h1 class="reveal" id="b-manifesto">{t('p1_title', lang)}</h1>
-        <div class="manifesto reveal">
+    slaytlar = []
+    for i in range(1, 6):
+        aktif = " is-active" if i == 1 else ""
+        gizli = "" if i == 1 else ' aria-hidden="true"'
+        buyuk, kucuk = f"{up}images/slide-{i}.webp", f"{up}images/slide-{i}-sm.webp"
+        setler = f"{kucuk} 760w, {buyuk} 1220w"
+        olcu = f'sizes="{olculer}" width="1220" height="1229" decoding="async"'
+        if i == 1:   # ilk kare hemen, kalanı deck.js yükler
+            ana = (f'<img class="slide-bg" src="{buyuk}" srcset="{setler}" {olcu} '
+                   f'alt="{t("alt1", lang)}" fetchpriority="high">')
+            ysm = f'<img src="{buyuk}" srcset="{setler}" {olcu} alt="" aria-hidden="true">'
+        else:
+            ana = (f'<img class="slide-bg" data-src="{buyuk}" data-srcset="{setler}" {olcu} '
+                   f'alt="{t(f"alt{i}", lang)}" loading="lazy">')
+            ysm = (f'<img data-src="{buyuk}" data-srcset="{setler}" {olcu} alt="" '
+                   f'aria-hidden="true" loading="lazy">')
+        slaytlar.append(f"""  <article class="slide{aktif}" style="--i:{i}" aria-label="{i} / 5"{gizli}>
+    <div class="bloom" aria-hidden="true">{ysm}</div>
+    <div class="slide-media">{ana}</div>
+    <div class="counter"><b>{i}</b><i>5</i></div>
+    <p class="slide-vtitle"><span>{dikey[i-1]}</span></p>
+  </article>""")
+
+    def kutu(i, kicker, baslik, govde, eylemler="", ekstra=""):
+        akt = " is-active" if i == 1 else ""
+        hh = "h1" if i == 1 else "h2"     # sayfanın tek H1'i manifesto
+        ey = f'\n        <div class="panel-actions">{eylemler}</div>' if eylemler else ""
+        return f"""  <div class="panel{akt}" style="--i:{i}">
+    <div class="frame"><div class="frame-inner">
+      <div class="panel-scroll">
+        <p class="panel-kicker">{kicker}</p>
+        <{hh} class="panel-title">{baslik}</{hh}>
+{govde}{ekstra}{ey}
+      </div>
+      <div class="scroll-hint"><b></b></div>
+    </div></div>
+  </div>"""
+
+    kutular = [
+        kutu(1, t("p1_kicker", lang), t("p1_title", lang),
+             f"""        <div class="panel-body manifesto">
           <p>{t('manifesto', lang)}</p>
           <p>{t('manifesto2', lang)}</p>
           <p class="sig">{SITE}</p>
-        </div>
-        <div class="hero-actions reveal">
-          {btn(t('our_services', lang), '#konsept')}
-          {btn(f"{t('project_mgr', lang)} · {TEL_YAZI}", tel, 'btn-accent')}
-        </div>
-      </div>
-      <div class="showcase reveal" role="group" aria-label="{t('carousel', lang)}">
-{vitrin(lang, up)}
-      </div>
-    </div>
-  </section>
+        </div>"""),
+        kutu(2, t("p2_kicker", lang), t("p2_title", lang),
+             f'        <div class="panel-body"><p>{t("p2_body", lang)}</p></div>',
+             btn(t("our_services", lang), bag((lang, key), lang, "services"))),
+        kutu(3, t("p3_kicker", lang), t("p3_title", lang),
+             f'        <div class="panel-body"><p>{t("p3_lead", lang)}</p></div>',
+             btn(f'{t("project_mgr", lang)} · {TEL_YAZI}', f"tel:{TEL_HREF}", "btn-accent"),
+             "\n" + kontrol_listesi(lang)
+             + f'\n        <p class="panel-close">{t("p3_close", lang)}</p>'),
+        kutu(4, t("p4_kicker", lang), t("p4_title", lang),
+             f'        <div class="panel-body"><p>{t("p4_body", lang)}</p></div>',
+             btn(t("p4_link", lang), bag((lang, key), lang, "services"))),
+        kutu(5, t("p5_kicker", lang), t("p5_title", lang),
+             f'        <blockquote class="pull-quote">{t("quote", lang)}</blockquote>',
+             btn(t("all_projects", lang), bag((lang, key), lang, "projects")),
+             "\n" + ref_bloklari(lang)),
+    ]
 
-  <section class="section sec" id="konsept" aria-labelledby="b-konsept">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow reveal">{t('p2_kicker', lang)}</p>
-        <h2 class="section-title reveal" id="b-konsept">{t('p2_title', lang)}</h2>
-        <p class="section-lede reveal">{t('p2_body', lang)}</p>
-      </div>
-      <div class="cards">
-        <article class="card reveal"><span class="mark"></span>
-          <h3>{t('p2_title', lang)}</h3><p>{t('p2_body', lang)}</p></article>
-        <article class="card reveal"><span class="mark"></span>
-          <h3>{t('svc_turnkey', lang)}</h3><p>{t('p3_lead', lang)}</p></article>
-        <article class="card reveal"><span class="mark"></span>
-          <h3>{t('p4_title', lang)}</h3><p>{t('p4_body', lang)}</p>
-          {btn(t('our_services', lang), bag((lang, key), lang, 'services'), 'btn-quiet')}</article>
-      </div>
-    </div>
-  </section>
+    return f"""<section class="hero" id="hero" aria-roledescription="carousel" aria-label="{t('carousel', lang)}">
 
-  <section class="section sec" id="anahtar-teslim" aria-labelledby="b-teklif">
-    <div class="wrap">
-      <div class="offer reveal">
-        <p class="eyebrow eyebrow-on-dark">{t('p3_kicker', lang)}</p>
-        <h2 id="b-teklif">{t('p3_title', lang)}</h2>
-        <p>{t('p3_lead', lang)}</p>
-{kontrol_listesi(lang)}
-        <p class="panel-close">{t('p3_close', lang)}</p>
-        <div class="hero-actions">{btn(f"{t('project_mgr', lang)} · {TEL_YAZI}", tel)}</div>
-      </div>
-    </div>
-  </section>
+{chr(10).join(slaytlar)}
 
-  <section class="section sec" id="surec" aria-labelledby="b-surec">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow reveal">{t('p4_kicker', lang)}</p>
-        <h2 class="section-title reveal" id="b-surec">{t('p4_title', lang)}</h2>
-      </div>
-      <ol class="steps">
-        <li class="reveal"><h3>{t('step1', lang)}</h3><p>{t('step1_b', lang)}</p></li>
-        <li class="reveal"><h3>{t('step2', lang)}</h3><p>{t('step2_b', lang)}</p></li>
-        <li class="reveal"><h3>{t('step3', lang)}</h3><p>{t('step3_b', lang)}</p></li>
-      </ol>
-    </div>
-  </section>
+{chr(10).join(kutular)}
 
-  <section class="section sec" id="referanslar" aria-labelledby="b-referans">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow reveal">{t('p5_kicker', lang)}</p>
-        <h2 class="section-title reveal" id="b-referans">{t('p5_title', lang)}</h2>
-      </div>
-      <blockquote class="pull-quote reveal">{t('quote', lang)}</blockquote>
-      <div class="bosluk"></div>
-{ref_bloklari(lang)}
-      <div class="hero-actions">{btn(t('all_projects', lang), bag((lang, key), lang, 'projects'))}</div>
-    </div>
-  </section>
+  <nav class="hero-nav" aria-label="{t('slide_nav', lang)}">
+    <button type="button" data-dir="-1" aria-label="{t('prev', lang)}">{DESTE_SOL}</button>
+    <button type="button" data-dir="1" aria-label="{t('next', lang)}">{DESTE_SAG}</button>
+    <span class="ayrac" aria-hidden="true"></span>
+    <a class="sosyal" href="{IG}" target="_blank" rel="noopener" aria-label="Instagram">{INSTAGRAM}</a>
+  </nav>
 
-  <section class="section sec" id="iletisim" aria-labelledby="b-iletisim">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow reveal">{t('nav_contact', lang)}</p>
-        <h2 class="section-title reveal" id="b-iletisim">{t('ctc_h1', lang)}</h2>
-        <p class="section-lede reveal">{t('ctc_lede', lang)}</p>
-      </div>
-      <div class="contact">
-        <div class="contact-card reveal">
-          <p class="ck-label">{t('project_mgr', lang)}</p><a href="{tel}">{TEL_YAZI}</a>
-        </div>
-        <div class="contact-card reveal">
-          <p class="ck-label">Instagram</p>
-          <a href="{IG}" target="_blank" rel="noopener">@aydinlar.interior.design</a>
-        </div>
-        <div class="contact-card reveal">
-          <p class="ck-label">{t('abt_company', lang)}</p><p>{FIRMA}</p>
-        </div>
-        <div class="contact-card reveal">
-          <p class="ck-label">{t('ctc_area', lang)}</p><p>{t('ctc_area_v', lang)}</p>
-        </div>
-      </div>
-    </div>
-  </section>"""
+  <p class="hero-foot">© {FIRMA} {YIL}</p>
+</section>"""
 
 
 def sayfa_home(lang):
     return (head(lang, "home", f"{SITE} — {t('p2_title', lang)}", t("desc_home", lang))
-            + header(lang, "home") + '\n<main class="page snap">\n' + deste(lang) + "\n</main>\n"
-            + footer(lang, "home") + kapat(lang, "home"))
+            + header(lang, "home") + "\n<main>\n" + deste(lang) + "\n</main>\n"
+            + kapat(lang, "home", deste=True))
 
 
 # ------------------------------------------------------------------ hizmetler
