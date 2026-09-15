@@ -61,6 +61,8 @@ T = {
 "nav_about":     ("Hakkımızda", "About", "Über uns"),
 "nav_contact":   ("İletişim", "Contact", "Kontakt"),
 "menu_open":     ("Menüyü aç", "Open menu", "Menü öffnen"),
+"fab_group":     ("Hızlı iletişim", "Quick contact", "Schnellkontakt"),
+"fab_call":      ("Ara", "Call", "Anrufen"),
 "home_aria":     ("ana sayfa", "home", "Startseite"),
 "logo_alt":      ("Aydınlar Interior Design logosu", "Aydınlar Interior Design logo",
                   "Aydınlar Interior Design Logo"),

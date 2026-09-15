@@ -12,7 +12,7 @@ import pathlib, sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from diller import BAYRAK, REFERANSLAR, SLUG, KOK, DIL_ADI, t   # noqa: E402
-from parcalar import btn, DESTE_SOL, DESTE_SAG, INSTAGRAM       # noqa: E402
+from parcalar import btn, DESTE_SOL, DESTE_SAG, INSTAGRAM, WHATSAPP, TELEFON   # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE = "Aydınlar Interior Design"
@@ -217,7 +217,14 @@ def sayfa_basi(kicker, h1, lede=""):
 
 def kapat(lang, key, deste=False):
     up = "../" * derinlik(dosya(lang, key))
-    js = f'\n<script src="{up}assets/ui.js"></script>\n'
+    # sağ alt hızlı iletişim: her sayfada, üst barın altında kalır (z-index)
+    fab = (f'\n<div class="fab" role="group" aria-label="{t("fab_group", lang)}">\n'
+           f'  <a class="fab-btn fab-wa" href="https://wa.me/{TEL_HREF.lstrip("+")}" target="_blank" '
+           f'rel="noopener" aria-label="WhatsApp: {TEL_YAZI}">{WHATSAPP}'
+           f'<span class="fab-tip" aria-hidden="true">WhatsApp</span></a>\n'
+           f'  <a class="fab-btn fab-tel" href="tel:{TEL_HREF}" aria-label="{t("fab_call", lang)}: {TEL_YAZI}">'
+           f'{TELEFON}<span class="fab-tip" aria-hidden="true">{TEL_YAZI}</span></a>\n</div>')
+    js = fab + f'\n<script src="{up}assets/ui.js"></script>\n'
     if deste:
         js += f'<script src="{up}assets/deck.js"></script>\n'
     return js + "</body>\n</html>\n"
